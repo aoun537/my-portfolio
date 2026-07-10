@@ -160,6 +160,12 @@ img {
   will-change: transform, opacity;
 }
 
+/* Chars produced by the shared letter-shift animation (lib/letterFx) */
+.fxChar {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 /* Shared section eyebrow label */
 .eyebrow {
   display: inline-flex;

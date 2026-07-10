@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { bindScramble } from "@/lib/letterFx";
+import { bindShift } from "@/lib/letterFx";
 import { projects, rankingCases, type Project, type RankingCase } from "@/lib/projects";
 import styles from "./Work.module.css";
 
@@ -250,9 +250,9 @@ function Rankings() {
         });
       });
 
-      /* ScrambleText on the colored heading words */
+      /* Letter shift on the colored heading words */
       const accentWord = block.querySelector<HTMLElement>(`.${styles.rankingsHeading} span`);
-      if (accentWord) return bindScramble(accentWord);
+      if (accentWord) return bindShift(accentWord);
     },
     { scope: blockRef },
   );
@@ -278,11 +278,11 @@ export default function Work() {
 
   useGSAP(
     () => {
-      /* ScrambleText on the colored heading words */
+      /* Letter shift on the colored heading words */
       const accentWord = introRef.current?.querySelector<HTMLElement>(
         `.${styles.introHeading} span`,
       );
-      if (accentWord) return bindScramble(accentWord);
+      if (accentWord) return bindShift(accentWord);
     },
     { scope: introRef },
   );

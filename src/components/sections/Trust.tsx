@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { bindScramble } from "@/lib/letterFx";
+import { bindShift } from "@/lib/letterFx";
 import { stats, credentials, testimonials, trustPoints } from "@/lib/trust";
 import styles from "./Trust.module.css";
 
@@ -46,9 +46,9 @@ export default function Trust() {
         });
       });
 
-      /* ScrambleText on the colored heading words */
+      /* Letter shift on the colored heading words */
       const accentWord = section.querySelector<HTMLElement>(`.${styles.heading} span`);
-      const unbindFlip = accentWord ? bindScramble(accentWord) : undefined;
+      const unbindFlip = accentWord ? bindShift(accentWord) : undefined;
 
       /* Testimonial strip: pinned horizontal scrub on wide screens */
       const strip = section.querySelector<HTMLElement>(`.${styles.stripTrack}`);

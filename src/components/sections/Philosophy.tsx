@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { bindScramble } from "@/lib/letterFx";
+import { bindShift } from "@/lib/letterFx";
 import styles from "./Philosophy.module.css";
 
-/** Accent words render in var(--accent) and get the scramble effect. */
+/** Accent words render in var(--accent) and get the letter shift. */
 const STATEMENT: Array<{ text: string; accent?: boolean }> = [
   { text: "REAL" },
   { text: "PROBLEMS", accent: true },
@@ -29,8 +29,8 @@ const STATEMENT_TEXT = STATEMENT.map((w) => w.text).join(" ");
 
 /**
  * Approach statement. Words fade and slide up as the block enters the
- * viewport; the accent-colored words run the shared GSAP ScrambleText
- * on scroll-in and re-scramble on hover.
+ * viewport; the accent-colored words run the shared letter shift
+ * on scroll-in and replay it on hover.
  */
 export default function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -51,8 +51,8 @@ export default function Philosophy() {
       });
 
       const cleanups = gsap.utils
-        .toArray<HTMLElement>("[data-scramble-word]", section)
-        .map((word) => bindScramble(word));
+        .toArray<HTMLElement>("[data-fx-word]", section)
+        .map((word) => bindShift(word));
       return () => cleanups.forEach((cleanup) => cleanup());
     },
     { scope: sectionRef },
@@ -71,7 +71,7 @@ export default function Philosophy() {
           <span key={wi} aria-hidden="true">
             <span
               data-word
-              data-scramble-word={word.accent ? "" : undefined}
+              data-fx-word={word.accent ? "" : undefined}
               className={`${styles.word} ${word.accent ? styles.accent : ""}`}
             >
               {word.text}

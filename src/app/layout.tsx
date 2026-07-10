@@ -73,7 +73,13 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body>
+      {/*
+        suppressHydrationWarning: browser extensions (password managers,
+        shopping assistants) inject attributes like bis_register into
+        <body> before React hydrates; those attribute-only mismatches
+        are noise, not app bugs.
+      */}
+      <body suppressHydrationWarning>
         <Script
           id="json-ld"
           type="application/ld+json"
