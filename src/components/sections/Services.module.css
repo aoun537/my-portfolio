@@ -75,6 +75,11 @@
   will-change: transform;
 }
 
+/*
+ * Each tool lives in its own bordered box, sized to its text plus
+ * padding, so nothing ever bleeds past its cell. The rail is a strip
+ * of these boxes; the last one closes with a right border.
+ */
 .toolMark {
   position: relative;
   display: flex;
@@ -82,13 +87,17 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  width: clamp(220px, 22vw, 330px);
-  padding: 0 14px;
+  width: max-content;
+  padding: 0 clamp(28px, 3vw, 52px);
   border-left: 1px solid var(--line);
 }
 
+.toolMark:last-child {
+  border-right: 1px solid var(--line);
+}
+
 .toolName {
-  font-size: clamp(18px, 1.9vw, 28px);
+  font-size: clamp(16px, 1.6vw, 23px);
   font-weight: 800;
   color: var(--ink);
   white-space: nowrap;

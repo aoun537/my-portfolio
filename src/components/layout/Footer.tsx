@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { attachRepulsionToLetters } from "@/lib/letterFx";
 import { site } from "@/lib/site";
 import styles from "./Footer.module.css";
 
@@ -29,13 +28,7 @@ export default function Footer() {
         scrollTrigger: { trigger: statement, start: "top 85%" },
       });
 
-      /* Live cursor repulsion, same engine as every other heading */
-      const detach = attachRepulsionToLetters(statement, split.chars as HTMLElement[]);
-
-      return () => {
-        detach();
-        split.revert();
-      };
+      return () => split.revert();
     },
     { scope: rootRef },
   );

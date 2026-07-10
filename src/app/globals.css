@@ -154,12 +154,10 @@ img {
   border: 0;
 }
 
-/* Chars produced by the shared letter-flip animation (lib/letterFx) */
-.fxChar {
+/* Word spans used by scroll-tied word-by-word reveals */
+.revealWord {
   display: inline-block;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 /* Shared section eyebrow label */

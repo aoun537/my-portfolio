@@ -18,19 +18,13 @@ function renderDescription(text: string): ReactNode[] {
   );
 }
 
-/** Rest and sweep geometry for the two circles (CSS variable values). */
-const REST = { ax: "60%", ay: "62%", ar: "40%" };
-const SWEEP = { ax: "48%", ay: "48%", ar: "55%" };
-
 /**
- * Pinned five-step eclipse. A light-grey circle sits center-left; the
- * accent circle sits BEHIND it, offset bottom-right, showing only a
- * crescent. The step word is TWO-TONE: two stacked copies of the text,
- * one clipped to the grey circle (grey fill) and one clipped to the
- * accent circle (accent fill), so the word's color splits hard along
- * the accent circle's edge. Advancing a step sweeps the accent circle
- * across in a near-eclipse, swaps word/headline/color, ticks the
- * counter, then settles back to the crescent.
+ * Pinned five-step circles, as simple as it looks: a greyish circle
+ * with the step word on it sits in front of a colored circle. On
+ * scroll the grey circle travels steadily toward the NORTH-WEST,
+ * uncovering the rear circle. At every quarter of the section's
+ * progress the rear circle changes color, the word on the circles
+ * swaps, the headline updates, and the counter ticks.
  */
 export default function Process() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -40,87 +34,67 @@ export default function Process() {
       const section = sectionRef.current;
       if (!section) return;
 
-      const venn = section.querySelector<HTMLElement>(`.${styles.venn}`);
-      const accentFills = gsap.utils.toArray<HTMLElement>("[data-accent-fill]", section);
+      const topCircle = section.querySelector<HTMLElement>(`.${styles.topCircle}`);
+      const rearCircle = section.querySelector<HTMLElement>(`.${styles.rearCircle}`);
+      const words = gsap.utils.toArray<HTMLElement>("[data-step-word]", section);
       const details = gsap.utils.toArray<HTMLElement>("[data-step-detail]", section);
       const counter = section.querySelector<HTMLElement>("[data-step-counter]");
       const steps = processSteps.length;
-      if (!venn) return;
+      if (!topCircle || !rearCircle) return;
 
-      /* Word pairs: grey copy + accent copy share a data-w index */
-      const wordPair = (i: number) =>
-        gsap.utils.toArray<HTMLElement>(`[data-w="${i}"]`, section);
-
-      for (let i = 0; i < steps; i++) {
-        gsap.set(wordPair(i), { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 44 });
-      }
+      words.forEach((word, i) =>
+        gsap.set(word, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 40 }),
+      );
       details.forEach((detail, i) =>
         gsap.set(detail, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 44 }),
       );
-      gsap.set(venn, { "--ax": REST.ax, "--ay": REST.ay, "--ar": REST.ar });
-      accentFills.forEach((el) => {
-        if (el.dataset.accentFill === "bg") {
-          el.style.backgroundColor = processSteps[0].color;
-        } else {
-          el.style.color = processSteps[0].color;
-        }
-      });
+      rearCircle.style.backgroundColor = processSteps[0].color;
 
-      const applyColor = (color: string) =>
-        accentFills.map((el) =>
-          el.dataset.accentFill === "bg"
-            ? gsap.to(el, { backgroundColor: color, duration: 0.16 })
-            : gsap.to(el, { color, duration: 0.16 }),
-        );
+      /*
+       * Step swaps are event-driven from scroll progress, so they run
+       * cleanly in both scroll directions at 25/50/75/100%.
+       */
+      let activeStep = 0;
+      const setStep = (next: number) => {
+        if (next === activeStep) return;
+        const prev = activeStep;
+        activeStep = next;
+        gsap.to(rearCircle, {
+          backgroundColor: processSteps[next].color,
+          duration: 0.4,
+          overwrite: "auto",
+        });
+        gsap.to(words[prev], { opacity: 0, y: -40, duration: 0.25, overwrite: "auto" });
+        gsap.to(words[next], { opacity: 1, y: 0, duration: 0.3, delay: 0.08, overwrite: "auto" });
+        gsap.to(details[prev], { opacity: 0, y: -44, duration: 0.25, overwrite: "auto" });
+        gsap.to(details[next], { opacity: 1, y: 0, duration: 0.3, delay: 0.1, overwrite: "auto" });
+        if (counter) counter.textContent = `0${next + 1}`;
+      };
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${steps * 85}%`,
-          scrub: 0.5,
-          pin: true,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            if (!counter) return;
-            const index = Math.min(steps - 1, Math.floor(self.progress * steps));
-            counter.textContent = `0${index + 1}`;
+      /* Continuous north-west travel of the grey circle across the pin */
+      gsap.fromTo(
+        topCircle,
+        { xPercent: 0, yPercent: 0, rotation: 0 },
+        {
+          xPercent: -34,
+          yPercent: -30,
+          rotation: -10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${steps * 80}%`,
+            scrub: 0.6,
+            pin: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              /* Quarter boundaries: 0-25-50-75-100 -> steps 1-5 */
+              const step = Math.min(steps - 1, Math.floor(self.progress * 4 + 0.0001));
+              setStep(self.progress > 0.999 ? steps - 1 : step);
+            },
           },
         },
-      });
-
-      for (let i = 0; i < steps - 1; i++) {
-        const at = i + 0.5;
-
-        /* Accent circle sweeps across into a near-eclipse ... */
-        tl.to(venn, {
-          "--ax": SWEEP.ax,
-          "--ay": SWEEP.ay,
-          "--ar": SWEEP.ar,
-          duration: 0.2,
-          ease: "power2.in",
-        }, at);
-
-        /* ... color flips at full coverage ... */
-        for (const tween of applyColor(processSteps[i + 1].color)) {
-          tl.add(tween, at + 0.2);
-        }
-
-        /* ... then settles back to the crescent */
-        tl.to(venn, {
-          "--ax": REST.ax,
-          "--ay": REST.ay,
-          "--ar": REST.ar,
-          duration: 0.2,
-          ease: "power2.out",
-        }, at + 0.24);
-
-        /* Word and headline swap under the sweep */
-        tl.to(wordPair(i), { opacity: 0, y: -44, duration: 0.16 }, at + 0.06);
-        tl.to(wordPair(i + 1), { opacity: 1, y: 0, duration: 0.18 }, at + 0.24);
-        tl.to(details[i], { opacity: 0, y: -44, duration: 0.18 }, at);
-        tl.to(details[i + 1], { opacity: 1, y: 0, duration: 0.2 }, at + 0.2);
-      }
+      );
     },
     { scope: sectionRef },
   );
@@ -143,28 +117,15 @@ export default function Process() {
       </h2>
 
       <div className={styles.stage}>
-        <div className={styles.venn} aria-hidden="true">
-          {/* Accent circle behind, crescent showing bottom-right */}
-          <span data-accent-fill="bg" className={styles.accentDisc} />
-          {/* Grey circle in front */}
-          <span className={styles.greyDisc} />
+        <div className={styles.circles} aria-hidden="true">
+          {/* Rear circle: recolors at every quarter */}
+          <span className={styles.rearCircle} />
 
-          {/* Word copy clipped to the GREY circle, grey fill */}
-          <span className={`${styles.wordLayer} ${styles.wordLayerGrey}`}>
+          {/* Grey circle in front, word on it, drifts north-west */}
+          <span className={styles.topCircle}>
             <span className={styles.wordStack}>
-              {processSteps.map((step, i) => (
-                <span key={step.word} data-w={i} className={styles.stepWord}>
-                  {step.word}
-                </span>
-              ))}
-            </span>
-          </span>
-
-          {/* Word copy clipped to the ACCENT circle, accent fill */}
-          <span data-accent-fill="text" className={`${styles.wordLayer} ${styles.wordLayerAccent}`}>
-            <span className={styles.wordStack}>
-              {processSteps.map((step, i) => (
-                <span key={step.word} data-w={i} className={styles.stepWord}>
+              {processSteps.map((step) => (
+                <span key={step.word} data-step-word className={styles.stepWord}>
                   {step.word}
                 </span>
               ))}

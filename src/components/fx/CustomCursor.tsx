@@ -1,32 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ACCENT_PALETTE } from "@/lib/accent";
+import { gsap } from "@/lib/gsap";
 import styles from "./CustomCursor.module.css";
 
-const TRAIL_POOL = 28;
-/** Pointer speed (px/frame) above which trail dots spawn. */
-const SPAWN_SPEED = 3;
-/** Trail dots render at this size and scale down via transform. */
-const TRAIL_BASE_SIZE = 18;
-/** Roughly one in six trail dots is white instead of a palette color. */
-const WHITE_CHANCE = 0.16;
-
-interface TrailDot {
-  el: HTMLElement;
-  x: number;
-  y: number;
-  size: number;
-  life: number;
-  active: boolean;
-}
+/** Ring diameters, biggest first: ring 1 largest, ring 4 smallest. */
+const RING_SIZES = [30, 22, 15, 9];
+/** Chase factors per ring: each ring follows the element before it. */
+const RING_EASE = [0.3, 0.22, 0.16, 0.11];
+/** Idle time before the cursor starts pulsing. */
+const IDLE_DELAY_MS = 700;
+/** Gap between pulses while the cursor stays idle. */
+const PULSE_EVERY_MS = 1900;
 
 /**
- * Solid pitch-black cursor circle, lerped toward the pointer each frame
- * for smooth motion. Fast movement spawns a trail of small palette-
- * colored dots behind it: the faster the pointer, the more and bigger
- * the dots. Idle or slow movement spawns nothing and the trail fades.
- * Fine pointers only; the native cursor is hidden via CSS.
+ * Main cursor: a big difference-blend circle lerped smoothly toward
+ * the pointer (reads solid black over the light page and inverts
+ * whatever it crosses). Behind it trail FOUR accent-colored circles
+ * in descending sizes, each chasing the one before it, so speed
+ * naturally stretches the chain apart. Left static, the main circle
+ * pulses up to 1.5x for about a second, then again while idle.
  */
 export default function CustomCursor() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -43,38 +36,36 @@ export default function CustomCursor() {
     root.style.display = "contents";
 
     const dot = root.querySelector<HTMLElement>("[data-cursor-dot]");
-    if (!dot) return;
-
-    /* Build the trail pool once */
-    const pool: TrailDot[] = [];
-    for (let i = 0; i < TRAIL_POOL; i++) {
-      const el = document.createElement("span");
-      el.className = styles.trailDot;
-      root.appendChild(el);
-      pool.push({ el, x: 0, y: 0, size: 0, life: 0, active: false });
-    }
-    let poolIndex = 0;
+    const rings = Array.from(root.querySelectorAll<HTMLElement>("[data-cursor-ring]"));
+    if (!dot || rings.length === 0) return;
 
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const pos = { ...target };
-    let lastX = target.x;
-    let lastY = target.y;
-    let speed = 0;
+    const ringPos = rings.map(() => ({ ...target }));
+    /* Everything stays hidden until the pointer first moves */
+    rings.forEach((ring) => (ring.style.opacity = "0"));
+    const pulse = { scale: 1 };
     let hovering = false;
     let visible = false;
-    let spawnCarry = 0;
+    let lastMoveAt = performance.now();
+    let lastPulseAt = 0;
+    let pulseTween: gsap.core.Tween | null = null;
     let raf = 0;
 
     const onMove = (event: PointerEvent) => {
       target.x = event.clientX;
       target.y = event.clientY;
+      lastMoveAt = performance.now();
       if (!visible) {
         visible = true;
         dot.style.opacity = "1";
+        rings.forEach((ring) => (ring.style.opacity = ""));
         pos.x = target.x;
         pos.y = target.y;
-        lastX = target.x;
-        lastY = target.y;
+        ringPos.forEach((p) => {
+          p.x = target.x;
+          p.y = target.y;
+        });
       }
       const el = event.target;
       hovering =
@@ -85,60 +76,47 @@ export default function CustomCursor() {
     const onLeave = () => {
       visible = false;
       dot.style.opacity = "0";
+      rings.forEach((ring) => (ring.style.opacity = "0"));
     };
 
-    const spawn = (x: number, y: number, velocity: number) => {
-      const dotRec = pool[poolIndex];
-      poolIndex = (poolIndex + 1) % TRAIL_POOL;
-      const color =
-        Math.random() < WHITE_CHANCE
-          ? "#ffffff"
-          : ACCENT_PALETTE[Math.floor(Math.random() * ACCENT_PALETTE.length)].hex;
-      dotRec.x = x + (Math.random() - 0.5) * 12;
-      dotRec.y = y + (Math.random() - 0.5) * 12;
-      /* Faster pointer -> bigger dots (8 to 18px) */
-      dotRec.size = Math.min(8 + velocity * 0.4, TRAIL_BASE_SIZE);
-      dotRec.life = 1;
-      dotRec.active = true;
-      dotRec.el.style.background = color;
+    const maybePulse = (now: number) => {
+      const idleFor = now - lastMoveAt;
+      if (idleFor < IDLE_DELAY_MS) return;
+      if (now - lastPulseAt < PULSE_EVERY_MS) return;
+      lastPulseAt = now;
+      pulseTween?.kill();
+      /* Grow to 1.5x and settle back over ~a second */
+      pulseTween = gsap.to(pulse, {
+        keyframes: [
+          { scale: 1.5, duration: 0.45, ease: "power2.out" },
+          { scale: 1, duration: 0.55, ease: "power2.inOut" },
+        ],
+      });
     };
 
     const tick = () => {
+      const now = performance.now();
+
       /* Smooth lerp toward the real pointer — never snap */
       pos.x += (target.x - pos.x) * 0.15;
       pos.y += (target.y - pos.y) * 0.15;
 
-      speed = Math.hypot(target.x - lastX, target.y - lastY);
-      lastX = target.x;
-      lastY = target.y;
+      if (visible) maybePulse(now);
 
-      const scale = hovering ? 1.7 : 1;
+      const scale = (hovering ? 1.4 : 1) * pulse.scale;
       dot.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) scale(${scale})`;
 
-      /* Spawn rate scales with speed; zero when idle */
-      if (visible && speed > SPAWN_SPEED) {
-        spawnCarry += Math.min(speed / 26, 2.2);
-        while (spawnCarry >= 1) {
-          spawnCarry -= 1;
-          spawn(pos.x, pos.y, speed);
-        }
-      } else {
-        spawnCarry = 0;
-      }
-
-      /* Age the trail: transform + opacity only, no layout writes */
-      for (const t of pool) {
-        if (!t.active) continue;
-        t.life -= 0.045;
-        if (t.life <= 0) {
-          t.active = false;
-          t.el.style.opacity = "0";
-          continue;
-        }
-        const scale = (t.size / TRAIL_BASE_SIZE) * t.life;
-        t.el.style.opacity = String(t.life * 0.9);
-        t.el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0) translate(-50%, -50%) scale(${scale})`;
-      }
+      /* Chain: ring 1 chases the dot, each next ring chases the previous */
+      let prevX = pos.x;
+      let prevY = pos.y;
+      rings.forEach((ring, i) => {
+        const p = ringPos[i];
+        p.x += (prevX - p.x) * RING_EASE[i];
+        p.y += (prevY - p.y) * RING_EASE[i];
+        ring.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) translate(-50%, -50%)`;
+        prevX = p.x;
+        prevY = p.y;
+      });
 
       raf = requestAnimationFrame(tick);
     };
@@ -149,15 +127,30 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(raf);
+      pulseTween?.kill();
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       document.documentElement.removeAttribute("data-cursor");
-      pool.forEach((t) => t.el.remove());
     };
   }, []);
 
   return (
     <div ref={rootRef} className={styles.cursor} aria-hidden="true">
+      {/* Rings render under the dot; ring 1 biggest, ring 4 smallest */}
+      {RING_SIZES.map((size, i) => (
+        <span
+          key={i}
+          data-cursor-ring
+          className={styles.ring}
+          style={{
+            width: size,
+            height: size,
+            opacity: undefined,
+            zIndex: 121 - i,
+          }}
+          data-ring-index={i}
+        />
+      ))}
       <span data-cursor-dot className={styles.dot} />
     </div>
   );

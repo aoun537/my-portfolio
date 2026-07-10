@@ -10,6 +10,20 @@ const CHANNELS = ["WhatsApp", "Email"] as const;
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Wraps each word in a revealable span for the scroll-tied reveal. */
+function Words({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(" ").map((word, i) => (
+        <span key={i} data-reveal className="revealWord">
+          {word}
+          {" "}
+        </span>
+      ))}
+    </>
+  );
+}
+
 /**
  * Conversational, left-aligned contact form. Inputs sit inline inside
  * the sentences as underlined blanks on the text baseline. The section
@@ -29,26 +43,52 @@ export default function Contact() {
       if (!section) return;
 
       /*
-       * Sequential reveal: the form appears line by line, top to
-       * bottom, as the section scrolls into view. The big Send
-       * message CTA is the final beat, fading and scaling in last.
+       * Scroll-tied reveal, line by line and word by word: each form
+       * line writes itself in as it passes through the viewport band.
+       * Scrubbed, so scrolling back rewinds the writing.
        */
       const rows = gsap.utils.toArray<HTMLElement>("[data-row]", section);
       const submit = section.querySelector<HTMLElement>(`.${styles.submit}`);
-      const lines = rows.filter((row) => row !== submit);
 
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: section, start: "top 65%" },
+      rows.forEach((row) => {
+        if (row === submit) return;
+        const pieces = gsap.utils.toArray<HTMLElement>("[data-reveal]", row);
+        const targets = pieces.length > 0 ? pieces : [row];
+        gsap.fromTo(
+          targets,
+          { opacity: 0.08, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "none",
+            stagger: 0.06,
+            scrollTrigger: {
+              trigger: row,
+              start: "top 92%",
+              end: "top 58%",
+              scrub: 0.4,
+            },
+          },
+        );
       });
 
-      lines.forEach((line, i) => {
-        tl.from(line, { opacity: 0, y: 24, duration: 0.6, ease: "power2.out" }, i * 0.22);
-      });
+      /* The big Send message CTA is the final beat */
       if (submit) {
-        tl.from(
+        gsap.fromTo(
           submit,
-          { opacity: 0, y: 30, scale: 0.92, duration: 0.7, ease: "power2.out" },
-          lines.length * 0.22 + 0.1,
+          { opacity: 0, y: 30, scale: 0.92 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            ease: "power1.out",
+            scrollTrigger: {
+              trigger: submit,
+              start: "top 96%",
+              end: "top 68%",
+              scrub: 0.4,
+            },
+          },
         );
       }
     },
@@ -118,7 +158,9 @@ export default function Contact() {
       ) : (
         <form className={styles.form} onSubmit={handleSubmit}>
           <p className={styles.row} data-row>
-            <label htmlFor="contact-name">Hey, Shams! My name is</label>
+            <label htmlFor="contact-name">
+              <Words text="Hey, Shams! My name is" />
+            </label>
             <input
               id="contact-name"
               name="name"
@@ -127,8 +169,11 @@ export default function Contact() {
               autoComplete="name"
               required
               className={styles.input}
+              data-reveal
             />
-            <span>and I am from</span>
+            <span>
+              <Words text="and I am from" />
+            </span>
             <input
               id="contact-country"
               name="country"
@@ -136,12 +181,15 @@ export default function Contact() {
               placeholder="Country"
               autoComplete="country-name"
               className={styles.input}
+              data-reveal
             />
           </p>
 
           <div className={styles.row} data-row>
-            <span id="contact-topics-label">Let&rsquo;s connect about</span>
-            <span className={styles.pills} role="group" aria-labelledby="contact-topics-label">
+            <span id="contact-topics-label">
+              <Words text="Let's connect about" />
+            </span>
+            <span className={styles.pills} role="group" aria-labelledby="contact-topics-label" data-reveal>
               {TOPICS.map((item) => {
                 const active = topic === item;
                 return (
@@ -160,7 +208,9 @@ export default function Contact() {
           </div>
 
           <p className={styles.row} data-row>
-            <label htmlFor="contact-email">We can talk in more detail at</label>
+            <label htmlFor="contact-email">
+              <Words text="We can talk in more detail at" />
+            </label>
             <input
               id="contact-email"
               name="email"
@@ -169,8 +219,9 @@ export default function Contact() {
               autoComplete="email"
               required
               className={`${styles.input} ${styles.inputWide}`}
+              data-reveal
             />
-            <span className={styles.pills} role="group" aria-label="Preferred channel">
+            <span className={styles.pills} role="group" aria-label="Preferred channel" data-reveal>
               {CHANNELS.map((item) => {
                 const active = channel === item;
                 return (
@@ -189,7 +240,9 @@ export default function Contact() {
           </p>
 
           <p className={styles.row} data-row>
-            <label htmlFor="contact-message">In short,</label>
+            <label htmlFor="contact-message">
+              <Words text="In short," />
+            </label>
             <input
               id="contact-message"
               name="message"
@@ -197,6 +250,7 @@ export default function Contact() {
               placeholder="Type your message"
               required
               className={`${styles.input} ${styles.inputFull}`}
+              data-reveal
             />
           </p>
 

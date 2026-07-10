@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { bindRepulsion } from "@/lib/letterFx";
+import { bindScramble } from "@/lib/letterFx";
 import { projects, rankingCases, type Project, type RankingCase } from "@/lib/projects";
 import styles from "./Work.module.css";
 
@@ -40,8 +40,8 @@ function ShowcasePanel({ project }: { project: Project }) {
         scrollTrigger: {
           trigger: panel,
           start: "top top",
-          end: "+=95%",
-          scrub: 0.55,
+          end: "+=115%",
+          scrub: 1,
           pin: true,
           invalidateOnRefresh: true,
         },
@@ -49,8 +49,8 @@ function ShowcasePanel({ project }: { project: Project }) {
 
       /* 1. Split: top half up, bottom half down, along the mid-line */
       if (topHalf && bottomHalf) {
-        tl.to(topHalf, { y: "-36vh", ease: "power2.inOut", duration: 0.45 }, 0);
-        tl.to(bottomHalf, { y: "36vh", ease: "power2.inOut", duration: 0.45 }, 0);
+        tl.to(topHalf, { y: "-36vh", ease: "power3.inOut", duration: 0.48 }, 0);
+        tl.to(bottomHalf, { y: "36vh", ease: "power3.inOut", duration: 0.48 }, 0);
       }
 
       /* 2. Image reveals ONLY after the halves have fully cleared,
@@ -58,14 +58,15 @@ function ShowcasePanel({ project }: { project: Project }) {
       if (shot) {
         tl.fromTo(
           shot,
-          { clipPath: "inset(50% 0% 50% 0% round 14px)", scale: 0.96 },
+          { clipPath: "inset(50% 0% 50% 0% round 14px)", scale: 0.94, y: 26 },
           {
             clipPath: "inset(0% 0% 0% 0% round 14px)",
             scale: 1,
-            ease: "power2.out",
-            duration: 0.34,
+            y: 0,
+            ease: "power3.out",
+            duration: 0.4,
           },
-          0.48,
+          0.5,
         );
       }
 
@@ -74,14 +75,14 @@ function ShowcasePanel({ project }: { project: Project }) {
         tl.fromTo(
           pillLeft,
           { x: () => pillLeft.offsetWidth / 2 + 10, opacity: 0 },
-          { x: 0, opacity: 1, ease: "power3.out", duration: 0.22 },
-          0.68,
+          { x: 0, opacity: 1, ease: "power3.out", duration: 0.26 },
+          0.7,
         );
         tl.fromTo(
           pillRight,
           { x: () => -(pillRight.offsetWidth / 2 + 10), opacity: 0 },
-          { x: 0, opacity: 1, ease: "power3.out", duration: 0.22 },
-          0.68,
+          { x: 0, opacity: 1, ease: "power3.out", duration: 0.26 },
+          0.7,
         );
       }
 
@@ -92,11 +93,11 @@ function ShowcasePanel({ project }: { project: Project }) {
           {
             opacity: 1,
             y: 0,
-            duration: 0.24,
+            duration: 0.26,
             ease: "power2.out",
             stagger: { each: 0.005, from: "center" },
           },
-          0.74,
+          0.76,
         );
       }
 
@@ -249,8 +250,9 @@ function Rankings() {
         });
       });
 
-      const heading = block.querySelector<HTMLElement>(`.${styles.rankingsHeading}`);
-      if (heading) return bindRepulsion(heading);
+      /* ScrambleText on the colored heading words */
+      const accentWord = block.querySelector<HTMLElement>(`.${styles.rankingsHeading} span`);
+      if (accentWord) return bindScramble(accentWord);
     },
     { scope: blockRef },
   );
@@ -276,8 +278,11 @@ export default function Work() {
 
   useGSAP(
     () => {
-      const heading = introRef.current?.querySelector<HTMLElement>(`.${styles.introHeading}`);
-      if (heading) return bindRepulsion(heading);
+      /* ScrambleText on the colored heading words */
+      const accentWord = introRef.current?.querySelector<HTMLElement>(
+        `.${styles.introHeading} span`,
+      );
+      if (accentWord) return bindScramble(accentWord);
     },
     { scope: introRef },
   );

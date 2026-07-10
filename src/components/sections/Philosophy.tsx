@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { attachRepulsionToLetters } from "@/lib/letterFx";
+import { bindScramble } from "@/lib/letterFx";
 import styles from "./Philosophy.module.css";
 
-/** Accent words render in var(--accent); every glyph gets repulsion. */
+/** Accent words render in var(--accent) and get the scramble effect. */
 const STATEMENT: Array<{ text: string; accent?: boolean }> = [
   { text: "REAL" },
   { text: "PROBLEMS", accent: true },
@@ -29,9 +29,8 @@ const STATEMENT_TEXT = STATEMENT.map((w) => w.text).join(" ");
 
 /**
  * Approach statement. Words fade and slide up as the block enters the
- * viewport; after that, every glyph (navy and accent alike) lives under
- * the shared cursor-repulsion engine: letters near the pointer pop away
- * and spring back home as it sweeps across the sentence.
+ * viewport; the accent-colored words run the shared GSAP ScrambleText
+ * on scroll-in and re-scramble on hover.
  */
 export default function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -51,11 +50,10 @@ export default function Philosophy() {
         scrollTrigger: { trigger: section, start: "top 72%" },
       });
 
-      const heading = section.querySelector<HTMLElement>(`.${styles.statement}`);
-      const letters = gsap.utils.toArray<HTMLElement>("[data-glyph]", section);
-      if (heading) {
-        return attachRepulsionToLetters(heading, letters);
-      }
+      const cleanups = gsap.utils
+        .toArray<HTMLElement>("[data-scramble-word]", section)
+        .map((word) => bindScramble(word));
+      return () => cleanups.forEach((cleanup) => cleanup());
     },
     { scope: sectionRef },
   );
@@ -73,13 +71,10 @@ export default function Philosophy() {
           <span key={wi} aria-hidden="true">
             <span
               data-word
+              data-scramble-word={word.accent ? "" : undefined}
               className={`${styles.word} ${word.accent ? styles.accent : ""}`}
             >
-              {word.text.split("").map((letter, li) => (
-                <span key={li} data-glyph className={styles.letter}>
-                  {letter}
-                </span>
-              ))}
+              {word.text}
             </span>{" "}
           </span>
         ))}

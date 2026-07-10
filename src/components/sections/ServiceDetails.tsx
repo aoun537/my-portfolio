@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { bindRepulsion } from "@/lib/letterFx";
+import { bindScramble } from "@/lib/letterFx";
 import { serviceDetails } from "@/lib/serviceDetails";
 import styles from "./ServiceDetails.module.css";
 
@@ -16,19 +16,44 @@ export default function ServiceDetails() {
 
   useGSAP(
     () => {
+      /*
+       * Curtain-wipe reveal: an accent panel sweeps across each row
+       * (grows from the left, exits to the right) and the content is
+       * uncovered at the flip, with the title settling out of a skew.
+       */
       const rows = gsap.utils.toArray<HTMLElement>(`.${styles.row}`, sectionRef.current);
       rows.forEach((row) => {
-        gsap.from(row, {
-          y: 80,
-          opacity: 0,
-          duration: 0.85,
-          ease: "power3.out",
-          scrollTrigger: { trigger: row, start: "top 90%" },
+        const wipe = row.querySelector<HTMLElement>("[data-wipe]");
+        const inner = row.querySelector<HTMLElement>(`.${styles.rowInner}`);
+        const title = row.querySelector<HTMLElement>(`.${styles.title}`);
+        if (!wipe || !inner) return;
+
+        gsap.set(inner, { opacity: 0 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: row, start: "top 88%" },
         });
+        tl.fromTo(
+          wipe,
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.4, ease: "power3.in" },
+        );
+        tl.set(inner, { opacity: 1 });
+        if (title) {
+          tl.from(title, { y: 42, skewY: 4, opacity: 0, duration: 0.55, ease: "power3.out" }, ">");
+        }
+        tl.to(
+          wipe,
+          { scaleX: 0, transformOrigin: "right center", duration: 0.5, ease: "power3.inOut" },
+          "<",
+        );
       });
 
-      const heading = sectionRef.current?.querySelector<HTMLElement>(`.${styles.heading}`);
-      if (heading) return bindRepulsion(heading);
+      /* ScrambleText on the colored heading words */
+      const accentWord = sectionRef.current?.querySelector<HTMLElement>(
+        `.${styles.heading} span`,
+      );
+      if (accentWord) return bindScramble(accentWord);
     },
     { scope: sectionRef },
   );
@@ -52,6 +77,7 @@ export default function ServiceDetails() {
       <div className={styles.rows}>
         {serviceDetails.map((service, i) => (
           <article key={service.id} className={styles.row} tabIndex={0}>
+            <span data-wipe className={styles.wipe} aria-hidden="true" />
             <div className={styles.rowInner}>
               <span className={styles.index} aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}

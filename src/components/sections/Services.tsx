@@ -61,11 +61,12 @@ export default function Services() {
             nearestIndex = i;
           }
           const closeness = Math.max(0, 1 - dist / 340);
-          const sink = dx < 0 ? 12 * (1 - closeness) : 0;
+          const sink = dx < 0 ? 10 * (1 - closeness) : 0;
           const name = markNames[i];
           const line = markLines[i];
           if (name) {
-            name.style.transform = `translateY(${sink - 24 * closeness}px) scale(${1 + closeness * 0.28})`;
+            /* Scale stays small so the text never leaves its box */
+            name.style.transform = `translateY(${sink - 16 * closeness}px) scale(${1 + closeness * 0.12})`;
             name.style.opacity = String(0.3 + closeness * 0.7);
           }
           if (line) {
@@ -77,13 +78,14 @@ export default function Services() {
       };
 
       /*
-       * Travel: first chip enters from right of the guide line; final
-       * position pushes the last chip well past it, so the whole list
-       * is traversed end to end. Pin length scales with rail width.
+       * Travel bounds are exact: the run begins with the FIRST box's
+       * left edge on the center guide and ends when the LAST box's
+       * right border reaches it, so every chip is traversed end to
+       * end. Pin length scales with the rail's real width.
        */
       const travel = () => ({
-        from: viewport.offsetWidth * 0.6,
-        to: -(tape.scrollWidth - viewport.offsetWidth * 0.2),
+        from: viewport.offsetWidth / 2,
+        to: viewport.offsetWidth / 2 - tape.scrollWidth,
       });
 
       gsap.fromTo(

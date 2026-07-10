@@ -5,7 +5,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/lib/site";
 import { marqueeItems } from "@/lib/services";
 import { PRELOADER_DONE_EVENT } from "@/components/fx/Preloader";
-import { attachRepulsionToLetters } from "@/lib/letterFx";
+import { playScrambleLetters } from "@/lib/letterFx";
 import styles from "./Hero.module.css";
 
 /** Letters that fly into the navbar monogram when the hero collapses. */
@@ -95,6 +95,8 @@ export default function Hero() {
           ease: "power4.out",
           delay: fromPreloader ? 0 : 0.2,
         });
+        /* Letters scramble into place as they rise */
+        playScrambleLetters(innerLetters.filter(Boolean) as HTMLElement[]);
         if (tagline && band) {
           gsap.from([tagline, band], {
             opacity: 0,
@@ -116,11 +118,11 @@ export default function Hero() {
         runIntro(false);
       }
 
-      /* Live cursor repulsion on every hero glyph */
-      const heading = section.querySelector<HTMLElement>(`.${styles.heading}`);
-      if (heading) {
-        return attachRepulsionToLetters(heading, innerLetters);
-      }
+      /* ScrambleText on the H1: hovering a name line re-scrambles it */
+      section.querySelectorAll<HTMLElement>("[data-name-line]").forEach((lineEl) => {
+        const lineLetters = gsap.utils.toArray<HTMLElement>("[data-letter]", lineEl);
+        lineEl.addEventListener("mouseenter", () => playScrambleLetters(lineLetters, lineEl));
+      });
 
       /* Collapse: pin the hero and dock the monogram letters into the logo */
 
