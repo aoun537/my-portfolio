@@ -1,0 +1,132 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 8px) var(--gutter) 0;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.92;
+}
+
+.nameLine {
+  display: flex;
+  font-size: clamp(72px, 15.5vw, 250px);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.nameLine.last {
+  align-self: flex-end;
+  margin-top: clamp(-8px, -0.5vw, -2px);
+}
+
+.letterWrap {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.accent {
+  color: var(--primary);
+}
+
+.tagline {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(150px, 24vh, 220px);
+  text-align: right;
+  font-size: clamp(14px, 1.4vw, 20px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  color: var(--ink);
+}
+
+/* Marquee band */
+.band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(48px, 9vh, 90px);
+  background: var(--band-bg);
+  border-top: 4px solid var(--band-rule);
+  border-bottom: 4px solid var(--band-rule);
+  padding: 18px 0;
+  overflow: hidden;
+}
+
+.bandTrack {
+  display: flex;
+  width: max-content;
+  animation: scrollBand 28s linear infinite;
+}
+
+.bandGroup {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.bandItem {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(24px, 3.5vw, 56px);
+  padding-right: clamp(24px, 3.5vw, 56px);
+  font-size: clamp(22px, 2.6vw, 38px);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--band-text);
+  white-space: nowrap;
+}
+
+.bandStar {
+  font-size: 0.75em;
+}
+
+@keyframes scrollBand {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-top: calc(var(--nav-h) + 20px);
+  }
+
+  .nameLine {
+    font-size: clamp(58px, 17.5vw, 90px);
+  }
+
+  .tagline {
+    bottom: clamp(160px, 28vh, 230px);
+    font-size: 13.5px;
+  }
+
+  .band {
+    bottom: clamp(56px, 11vh, 100px);
+    padding: 12px 0;
+    border-width: 3px;
+  }
+
+  .bandItem {
+    font-size: 19px;
+  }
+}

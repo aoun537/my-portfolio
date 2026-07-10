@@ -1,0 +1,32 @@
+.section {
+  padding: clamp(120px, 22vh, 240px) var(--gutter);
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.statement {
+  font-size: clamp(40px, 6.4vw, 108px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: min(92vw, 1500px);
+}
+
+.word {
+  display: inline-block;
+}
+
+.letter {
+  display: inline-block;
+  will-change: transform;
+}
+
+.accent {
+  color: var(--primary);
+  cursor: default;
+}

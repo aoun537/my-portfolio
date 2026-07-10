@@ -1,0 +1,186 @@
+.section {
+  position: relative;
+  padding: clamp(110px, 18vh, 220px) var(--gutter) clamp(60px, 10vh, 120px);
+  /* Light tint of the CURRENT accent — recolors with the palette */
+  background: var(--form-bg);
+  color: var(--ink);
+}
+
+.eyebrow {
+  color: var(--primary);
+}
+
+/* Conversational, left-aligned sentence rows */
+.form {
+  margin-top: clamp(50px, 9vh, 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(28px, 5vh, 48px);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  font-size: clamp(24px, 3.2vw, 48px);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* Inline underlined blanks sitting on the sentence baseline */
+.input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--ink-faint);
+  font-size: inherit;
+  font-weight: 300;
+  padding: 0 4px 6px;
+  min-width: 240px;
+  flex: 0 1 auto;
+  color: var(--ink);
+  transition: border-color 0.3s ease;
+}
+
+.input::placeholder {
+  color: var(--ink-faint);
+}
+
+.input:focus {
+  outline: none;
+  border-bottom-color: var(--ink);
+}
+
+.inputWide {
+  flex: 1 1 340px;
+}
+
+.inputFull {
+  flex: 1 1 100%;
+}
+
+.pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pill {
+  border: 2px solid var(--ink-faint);
+  border-radius: var(--radius-pill);
+  padding: 12px 26px;
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 500;
+  color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s var(--ease-out-expo);
+}
+
+.pill:hover {
+  transform: translateY(-3px);
+  border-color: var(--ink);
+}
+
+/* Selected pill = filled navy/black */
+.pillActive {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.error {
+  font-size: 17px;
+  font-weight: 600;
+  color: #a41326;
+}
+
+[data-theme="dark"] .error {
+  color: #ff8f9c;
+}
+
+/* Very large Send message CTA */
+.submit {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: clamp(16px, 4vh, 40px);
+  font-size: clamp(52px, 8.5vw, 130px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out-expo);
+}
+
+.submit svg {
+  width: 0.55em;
+  height: 0.55em;
+  color: var(--primary);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateX(8px);
+}
+
+.submit:hover:not(:disabled) svg {
+  transform: translate(6px, -6px);
+}
+
+.submit:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.success {
+  margin-top: clamp(50px, 9vh, 100px);
+  max-width: 720px;
+}
+
+.successTitle {
+  font-size: clamp(44px, 6vw, 90px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.successText {
+  margin-top: 18px;
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.fallback {
+  margin-top: clamp(50px, 10vh, 110px);
+  text-align: center;
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+.fallbackLink {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+
+.fallbackLink:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 700px) {
+  .row {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .input {
+    min-width: 180px;
+  }
+
+  .pill {
+    padding: 10px 20px;
+  }
+}

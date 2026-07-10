@@ -1,0 +1,44 @@
+/*
+ * The wrapper must NOT create a stacking context (no position/z-index/
+ * opacity), otherwise mix-blend-mode on the dot would blend against the
+ * wrapper instead of the page and the inversion would be lost.
+ */
+.cursor {
+  display: none;
+  pointer-events: none;
+}
+
+/*
+ * Big cursor circle. White + difference inverts whatever sits under it:
+ * over the light page it reads near-black, over navy text the letters
+ * show through inverted, and it stays visible on the dark theme too.
+ */
+.dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 122;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Palette-colored trail particles (fixed box, scaled via transform) */
+.trailDot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 121;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+  pointer-events: none;
+}

@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shams Uzair | Local SEO Expert Portfolio
 
-## Getting Started
+Single-page portfolio for Shams Uzair, Local SEO Expert and Certified Vibe Coder. Built with Next.js (App Router), TypeScript, GSAP, and Lenis.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # http://localhost:3000
+npm run build     # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contact form (Resend)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Create an API key at https://resend.com/api-keys
+2. Copy `.env.example` to `.env.local` and paste the key into `RESEND_API_KEY`
+3. Optional: once your domain is verified in Resend, set `RESEND_FROM` to something like `Shams Uzair <hello@yourdomain.com>`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Without a key the form degrades gracefully and shows the direct email fallback.
 
-## Learn More
+## Where to edit content
 
-To learn more about Next.js, take a look at the following resources:
+All copy lives in typed data files, so you never touch components to change words:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| File | Contains |
+| --- | --- |
+| `src/lib/site.ts` | Name, role, email, tagline, keywords, social links, `SITE_URL` |
+| `src/lib/services.ts` | Toolkit groups (SEARCH/LOCAL/BUILD/SHIP), rail chips, hero marquee items |
+| `src/lib/serviceDetails.ts` | Per-service inclusion lists |
+| `src/lib/projects.ts` | Work showcase projects and ranking case studies |
+| `src/lib/trust.ts` | Stats, credentials, differentiators, testimonials |
+| `src/lib/process.ts` | Five process steps, headlines, and per-step colors |
+| `src/lib/faqs.ts` | FAQ questions and answers (also feeds FAQPage schema) |
+| `src/lib/accent.ts` | The global accent palette cycled on every menu toggle |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Before going live
 
-## Deploy on Vercel
+- [ ] Set the real domain in `SITE_URL` (`src/lib/site.ts`)
+- [ ] Replace placeholder projects and swap SVG mockups in `public/images/projects/` with real screenshots (1280x840 or similar)
+- [ ] Replace placeholder testimonials in `src/lib/trust.ts` with real client quotes
+- [ ] Add social profile URLs in `src/lib/site.ts`
+- [ ] Add `RESEND_API_KEY` to the hosting environment (for example Vercel project settings)
+- [ ] Add an Open Graph image (`src/app/opengraph-image.png`, 1200x630)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Folder structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/            Routes, layout, global styles, API route, sitemap/robots
+  components/
+    fx/           Full-page effects: preloader, cursor, plus-grid canvas
+    layout/       Navbar, menu overlay, floating controls, footer
+    providers/    Theme and Lenis smooth-scroll providers
+    sections/     One folder-free component + CSS module per page section
+  lib/            Typed content data, GSAP setup, accent palette, letter physics, schema
+scripts/          Placeholder artwork generator
+public/images/    Project mockups (replace with real screenshots)
+```
+
+## Architecture notes
+
+- One global `--accent` CSS variable drives every accent-colored element; it cycles through the palette (`src/lib/accent.ts`) on each menu open/close
+- Theme (light default, dark toggle) is set on `<html data-theme>` before paint by an inline script; all tokens live in `src/app/globals.css`
+- Lenis smooth scrolling and GSAP ScrollTrigger share one ticker (`src/components/providers/SmoothScroll.tsx`)
+- Heading letters are driven by a shared spring-physics cursor-repulsion engine (`src/lib/letterFx.ts`); one ticker loop serves every heading
+- Hero letters use a two-span structure: the outer span belongs to the scroll-collapse animation, the inner span to the intro, so the two never fight over start values
+- The How I Work word is two stacked text copies clipped to each circle via CSS variables, which is what produces the hard two-tone split along the accent circle's edge
+- JSON-LD (Person, ProfessionalService, FAQPage) is emitted from `src/lib/schema.ts`
+- `scripts/generate-project-art.mjs` regenerates the placeholder project mockups
+- No secrets live in the repo: the Resend key is read from `RESEND_API_KEY` at runtime and `.env*` is gitignored

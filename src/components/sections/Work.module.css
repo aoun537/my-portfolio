@@ -1,0 +1,401 @@
+.section {
+  position: relative;
+}
+
+.intro {
+  padding: clamp(90px, 14vh, 170px) var(--gutter) clamp(40px, 7vh, 80px);
+  border-top: 1px solid var(--line);
+}
+
+.introHeading {
+  margin-top: 20px;
+  font-size: clamp(38px, 5.6vw, 92px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 1200px;
+}
+
+.introHeading span {
+  color: var(--primary);
+}
+
+/* ---------- Showcase panels ---------- */
+.panel {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3.5vh, 36px);
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 10px) var(--gutter) 30px;
+}
+
+.stage {
+  position: relative;
+  width: min(920px, 90vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shot {
+  position: relative;
+  width: 100%;
+  will-change: transform, clip-path;
+  filter: drop-shadow(0 30px 60px var(--shadow));
+  /* Fully hidden until the title halves have cleared */
+  clip-path: inset(50% 0% 50% 0% round 14px);
+}
+
+.shotImage {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+/* Circular accent-filled VIEW CASE button on the artwork */
+.viewCase {
+  position: absolute;
+  top: -44px;
+  right: -40px;
+  width: clamp(104px, 11vw, 160px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: clamp(15px, 1.4vw, 21px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  transform: rotate(10deg);
+  transition: transform 0.5s var(--ease-out-expo);
+  box-shadow: 6px 10px 0 rgba(0, 0, 0, 0.28);
+}
+
+.viewCase:hover {
+  transform: rotate(-6deg) scale(1.07);
+}
+
+/*
+ * The split title: two stacked copies of the same text, each clipped
+ * to one half of the glyphs. Scrolling moves the top half UP and the
+ * bottom half DOWN, opening a horizontal gap along the mid-line.
+ */
+.title {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.titleHalf {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(64px, 12vw, 200px);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.titleTop {
+  clip-path: inset(-20% 0 50% 0);
+}
+
+.titleBottom {
+  clip-path: inset(50% 0 -20% 0);
+}
+
+.titleText {
+  display: inline-block;
+}
+
+/* Caption under the artwork */
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  max-width: 720px;
+  text-align: center;
+}
+
+.pills {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pill {
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 12px 26px;
+  font-size: clamp(13px, 1.3vw, 17px);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  background: var(--bg);
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.pillSolid {
+  color: #fff;
+  border-color: transparent;
+}
+
+.blurb {
+  font-size: clamp(14.5px, 1.25vw, 17.5px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.blurbChar {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ---------- Rankings ---------- */
+.rankings {
+  padding: clamp(90px, 14vh, 170px) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.rankingsHeading {
+  margin-top: 20px;
+  font-size: clamp(34px, 4.8vw, 76px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 1100px;
+}
+
+.rankingsHeading span {
+  color: var(--primary);
+}
+
+.rankGrid {
+  margin-top: clamp(40px, 7vh, 80px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+  gap: 22px;
+}
+
+.rankCard {
+  position: relative;
+  overflow: hidden;
+  background: var(--band-bg);
+  color: var(--brand-paper);
+  border-radius: 20px;
+  padding: 30px 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: 0 20px 50px var(--shadow);
+}
+
+.rankKeyword {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(243, 243, 241, 0.08);
+  border: 1px solid rgba(243, 243, 241, 0.18);
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand-paper);
+}
+
+.rankKeyword svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  opacity: 0.7;
+}
+
+.rankKeyword span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rankMove {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.rankMove svg {
+  width: 26px;
+  height: 26px;
+  align-self: center;
+  color: var(--band-text);
+}
+
+.rankFrom {
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 900;
+  color: rgba(243, 243, 241, 0.35);
+  text-decoration: line-through;
+  text-decoration-thickness: 4px;
+  text-decoration-color: rgba(226, 72, 61, 0.8);
+}
+
+.rankTo {
+  font-size: clamp(58px, 6vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--band-text);
+}
+
+.rankMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 18px;
+  border-top: 1px solid rgba(243, 243, 241, 0.14);
+  padding-top: 20px;
+}
+
+.rankMeta dt {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 243, 241, 0.45);
+}
+
+.rankMeta dd {
+  margin-top: 3px;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.rankStat {
+  color: var(--band-text);
+}
+
+.rankIndex {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(243, 243, 241, 0.3);
+}
+
+/* ---------- Archive close ---------- */
+.archive {
+  padding: clamp(110px, 18vh, 200px) var(--gutter) clamp(80px, 14vh, 160px);
+  border-top: 1px solid var(--line);
+}
+
+.archiveStatement {
+  font-size: clamp(30px, 4.4vw, 70px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--ink);
+  max-width: 1200px;
+}
+
+.archiveStatement span {
+  color: var(--primary);
+}
+
+.archiveFooter {
+  margin-top: clamp(44px, 8vh, 90px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.archiveNote {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+}
+
+.archiveLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: clamp(24px, 3vw, 46px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.25s ease;
+}
+
+.archiveLink svg {
+  width: 0.9em;
+  height: 0.9em;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.archiveLink:hover {
+  color: var(--primary);
+}
+
+.archiveLink:hover svg {
+  transform: translateX(10px);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 700px) {
+  .panel {
+    padding-top: calc(var(--nav-h) - 10px);
+  }
+
+  .stage {
+    width: 94vw;
+  }
+
+  .titleHalf {
+    font-size: clamp(44px, 13vw, 72px);
+  }
+
+  .viewCase {
+    top: -30px;
+    right: -8px;
+  }
+
+  .pill {
+    padding: 10px 18px;
+  }
+
+  .rankCard {
+    padding: 24px 20px 20px;
+  }
+
+  .rankMeta {
+    gap: 12px;
+  }
+}

@@ -1,0 +1,82 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter);
+  pointer-events: none;
+}
+
+.navbar > * {
+  pointer-events: auto;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  padding: 8px 0;
+}
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 30px;
+}
+
+.menuIcon span {
+  height: 3px;
+  width: 100%;
+  background: var(--ink);
+  transition: transform 0.35s var(--ease-out-expo), width 0.35s var(--ease-out-expo),
+    background-color 0.3s ease;
+}
+
+.menuIcon span:nth-child(2) {
+  background: var(--primary);
+}
+
+.menuButton:hover .menuIcon span:nth-child(1) {
+  transform: translateX(4px);
+}
+
+.menuButton:hover .menuIcon span:nth-child(3) {
+  transform: translateX(-4px);
+}
+
+/* Same face as the hero headline so docking letters morph seamlessly */
+.logo {
+  font-family: var(--font-primary);
+  font-size: 34px;
+  line-height: 0.92;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.logoAccent {
+  color: var(--primary);
+}
+
+.logo[data-visible="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease;
+}
+
+.logoDot {
+  color: var(--primary);
+}

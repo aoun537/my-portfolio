@@ -1,0 +1,42 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+.greeting {
+  position: absolute;
+  font-size: clamp(40px, 7vw, 96px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  opacity: 0;
+}
+
+.monogram {
+  display: flex;
+  line-height: 0.92;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.letterS,
+.letterU {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform;
+}
+
+.letterS {
+  color: var(--ink);
+}
+
+.letterU {
+  color: var(--primary);
+}

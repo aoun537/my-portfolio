@@ -1,0 +1,162 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 16px) var(--gutter) 40px;
+  border-top: 1px solid var(--line);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.counter {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  color: var(--primary);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(30px, 5vw, 80px);
+  min-height: calc(100vh - var(--nav-h) - 120px);
+}
+
+/* ---------- Two-tone eclipse ----------
+ * Circle geometry lives in CSS variables so the background discs and
+ * the word clip masks track each other exactly during the sweep:
+ *   grey circle:  fixed  (--gx, --gy, --gr)
+ *   accent circle: animated (--ax, --ay, --ar)
+ */
+.venn {
+  --gx: 44%;
+  --gy: 44%;
+  --gr: 40%;
+  --ax: 60%;
+  --ay: 62%;
+  --ar: 40%;
+
+  position: relative;
+  aspect-ratio: 1;
+  max-width: min(58vh, 620px);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.accentDisc,
+.greyDisc,
+.wordLayer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Accent circle BEHIND, offset bottom-right: only a crescent shows */
+.accentDisc {
+  clip-path: circle(var(--ar) at var(--ax) var(--ay));
+}
+
+/* Opaque light-grey circle in front */
+.greyDisc {
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  clip-path: circle(var(--gr) at var(--gx) var(--gy));
+}
+
+/* Word copies: same text twice, clipped to each circle */
+.wordLayerGrey {
+  clip-path: circle(var(--gr) at var(--gx) var(--gy));
+  color: color-mix(in srgb, var(--ink) 48%, var(--bg));
+}
+
+.wordLayerAccent {
+  clip-path: circle(var(--ar) at var(--ax) var(--ay));
+  /* color driven per step from JS */
+}
+
+/* The stack centers on the grey circle's center */
+.wordStack {
+  position: absolute;
+  left: var(--gx);
+  top: var(--gy);
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+}
+
+.stepWord {
+  grid-area: 1 / 1;
+  font-size: clamp(38px, 5vw, 84px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+/* ---------- Step details ---------- */
+.detailStage {
+  position: relative;
+  display: grid;
+}
+
+.detail {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  will-change: transform, opacity;
+}
+
+.detailTitle {
+  font-size: clamp(30px, 3.8vw, 62px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.detailText {
+  font-size: clamp(15px, 1.4vw, 20px);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 480px;
+}
+
+.emphasis {
+  font-style: italic;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 900px) {
+  .stage {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 26px;
+    min-height: calc(100vh - var(--nav-h) - 90px);
+    padding-top: 10px;
+  }
+
+  .venn {
+    max-width: min(38vh, 330px);
+  }
+
+  .stepWord {
+    font-size: clamp(26px, 8vw, 44px);
+  }
+
+  .detailTitle {
+    font-size: clamp(26px, 7.5vw, 42px);
+  }
+
+  .detailText {
+    font-size: 15px;
+  }
+}

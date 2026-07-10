@@ -1,0 +1,72 @@
+.footer {
+  padding: clamp(100px, 16vh, 200px) var(--gutter) 36px;
+}
+
+.closing {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* Sized so the whole statement always fits the viewport on one line */
+.statement {
+  font-size: clamp(28px, 7.2vw, 150px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.detail {
+  max-width: 640px;
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.bar {
+  margin-top: clamp(70px, 12vh, 140px);
+  padding-top: 26px;
+  /* Clearance for the floating theme/scroll buttons */
+  padding-right: 90px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 700px) {
+  .bar {
+    padding-right: 0;
+    padding-bottom: 90px;
+  }
+}
+
+.links {
+  display: flex;
+  gap: 22px;
+}
+
+.links a {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color 0.25s ease;
+}
+
+.links a:hover {
+  color: var(--primary);
+}

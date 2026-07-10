@@ -1,0 +1,168 @@
+.section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: calc(var(--nav-h) + 8px);
+}
+
+.head {
+  padding: 0 var(--gutter);
+}
+
+/* Category block pinned to the vertical center of the viewport */
+.stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--gutter);
+}
+
+.category {
+  position: absolute;
+  inset: 0;
+  padding: 0 var(--gutter);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2.4vh, 26px);
+  will-change: transform, opacity;
+}
+
+.word {
+  font-size: clamp(58px, 12.5vw, 210px);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.wordDot {
+  color: var(--primary);
+}
+
+.blurb {
+  max-width: 720px;
+  font-size: clamp(14.5px, 1.35vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.blurb strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+/* ---------- Toolkit rail ---------- */
+.railViewport {
+  position: relative;
+  border-top: 4px solid var(--line-strong);
+  border-bottom: 4px solid var(--line-strong);
+  height: clamp(150px, 22vh, 210px);
+  overflow: hidden;
+  margin-bottom: clamp(20px, 4vh, 48px);
+}
+
+.railTape {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+}
+
+.toolMark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: clamp(220px, 22vw, 330px);
+  padding: 0 14px;
+  border-left: 1px solid var(--line);
+}
+
+.toolName {
+  font-size: clamp(18px, 1.9vw, 28px);
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0.3;
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+}
+
+/* Accent underline: full width when the chip sits on the guide line */
+.toolUnderline {
+  width: 72px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* Fixed center guide line with diamonds top and bottom */
+.railGuide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--primary);
+}
+
+.railGuide::before,
+.railGuide::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.railGuide::before {
+  top: -7px;
+}
+
+.railGuide::after {
+  bottom: -7px;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 700px) {
+  .word {
+    font-size: clamp(44px, 13.5vw, 88px);
+    white-space: normal;
+  }
+
+  .blurb {
+    font-size: 14.5px;
+  }
+
+  .railViewport {
+    height: 140px;
+    margin-bottom: 18px;
+  }
+
+  .toolMark {
+    width: 160px;
+  }
+
+  .toolName {
+    font-size: 15px;
+  }
+
+  .toolUnderline {
+    width: 52px;
+    height: 3px;
+  }
+}
