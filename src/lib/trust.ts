@@ -12,7 +12,7 @@ export interface Stat {
 }
 
 export const stats: Stat[] = [
-  { value: 4, suffix: "+", label: "Years in Local SEO" },
+  { value: 1, suffix: "", label: "Year building for the web" },
   { value: 60, suffix: "+", label: "Local businesses helped" },
   { value: 90, suffix: "%", label: "Clients reaching the map pack" },
   { value: 12, suffix: "+", label: "Custom systems shipped" },
@@ -32,7 +32,7 @@ export const credentials: Credential[] = [
   },
   {
     title: "React and Next.js Developer",
-    issuer: "4+ years of client work",
+    issuer: "1 year of client work",
     detail: "Component architecture, server rendering, routing, and state handled properly, so applications stay fast as features pile up.",
   },
   {

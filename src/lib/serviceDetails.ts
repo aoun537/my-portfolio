@@ -26,20 +26,6 @@ export const serviceDetails: ServiceDetail[] = [
     ],
   },
   {
-    id: "web-application",
-    title: "Web Application",
-    summary:
-      "Product work rather than pages: dashboards, portals, and internal tools with real state, real auth, and a database behind them.",
-    inclusions: [
-      "React and Next.js application architecture",
-      "Authentication, roles, and permissions",
-      "Database schema design and migrations",
-      "REST or tRPC API layer with typed contracts",
-      "Third party integrations and webhooks",
-      "Automated tests on the paths that matter",
-    ],
-  },
-  {
     id: "ecommerce",
     title: "E-commerce Storefront",
     summary:

@@ -223,8 +223,8 @@ export default function Hero() {
     <section ref={sectionRef} className={`${styles.hero} plusGrid`} id="top">
       <h1 className={styles.heading}>
         <span className="srOnly">
-          {site.name}: {site.role} with {site.yearsExperience} years of
-          experience building fast, accessible websites and web applications
+          {site.name}: {site.role} with {site.experience} of
+          experience building fast, accessible websites
         </span>
         {/*
          * One accent letter per line, so both recolor when the menu commits

@@ -12,12 +12,12 @@ export const faqs: Faq[] = [
   {
     question: "What kind of web development do you do?",
     answer:
-      "Custom marketing sites, web applications, and e-commerce storefronts, mostly with React, Next.js, and TypeScript. That covers the interface people use, the API and database behind it, and the deployment pipeline that gets it live. If it runs in a browser and needs to be fast and maintainable, it is in scope.",
+      "Custom marketing sites and e-commerce storefronts, mostly with React, Next.js, and TypeScript. That covers the interface people use, the content layer behind it, and the deployment pipeline that gets it live. I also take on performance and accessibility work on sites that already exist.",
   },
   {
     question: "How long does a typical project take?",
     answer:
-      "A focused marketing site is usually 2 to 4 weeks. A web application with authentication, a database, and integrations is more often 6 to 12 weeks depending on how many flows it has. I scope the first milestone tightly so you see something working early rather than waiting until the end.",
+      "A focused marketing site is usually 2 to 4 weeks. An e-commerce storefront with product pages, checkout, and payment integration is more often 4 to 8 weeks depending on catalogue size. I scope the first milestone tightly so you see something working early rather than waiting until the end.",
   },
   {
     question: "Can you fix or improve my existing site instead of rebuilding it?",
@@ -42,6 +42,6 @@ export const faqs: Faq[] = [
   {
     question: "How much do your services cost?",
     answer:
-      "Websites and applications are quoted per project after a short discovery call, so the number reflects your actual scope rather than a package. Maintenance is a monthly retainer. Send a message through the contact form describing what you need and you will get a clear quote with no surprises.",
+      "Websites and storefronts are quoted per project after a short discovery call, so the number reflects your actual scope rather than a package. Maintenance is a monthly retainer. Send a message through the contact form describing what you need and you will get a clear quote with no surprises.",
   },
 ];

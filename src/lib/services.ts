@@ -99,7 +99,7 @@ export const marqueeItems: string[] = [
   "WEB DEVELOPMENT",
   "REACT & NEXT.JS",
   "TYPESCRIPT",
-  "WEB APPLICATIONS",
+  "AI-ASSISTED BUILDS",
   "E-COMMERCE BUILDS",
   "DESIGN SYSTEMS",
   "PERFORMANCE TUNING",
