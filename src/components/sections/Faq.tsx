@@ -38,7 +38,7 @@ export default function Faq() {
     >
       <span className="eyebrow">Questions &amp; Answers</span>
       <h2 id="faq-heading" className={styles.heading}>
-        Local SEO Questions, <span>Answered Straight.</span>
+        Web Development Questions, <span>Answered Straight.</span>
       </h2>
 
       <div className={styles.list}>

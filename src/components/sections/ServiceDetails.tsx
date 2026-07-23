@@ -127,7 +127,7 @@ export default function ServiceDetails() {
             <p className={styles.totalLine} data-print>
               <span>SUBTOTAL</span>
               <span className={styles.leaders} aria-hidden="true" />
-              <span>RANKINGS</span>
+              <span>WORKING SOFTWARE</span>
             </p>
             <p className={styles.totalLine} data-print>
               <span>HIDDEN FEES</span>
@@ -137,7 +137,7 @@ export default function ServiceDetails() {
             <p className={`${styles.totalLine} ${styles.totalDue}`} data-print>
               <span>TOTAL DUE</span>
               <span className={styles.leaders} aria-hidden="true" />
-              <span>MORE CALLS</span>
+              <span>HAPPIER USERS</span>
             </p>
           </div>
 

@@ -224,7 +224,7 @@ export default function Hero() {
       <h1 className={styles.heading}>
         <span className="srOnly">
           {site.name}: {site.role} with {site.yearsExperience} years of
-          experience helping local businesses rank on Google
+          experience building fast, accessible websites and web applications
         </span>
         {/*
          * One accent letter per line, so both recolor when the menu commits
@@ -236,9 +236,9 @@ export default function Hero() {
       </h1>
 
       <p className={styles.tagline}>
-        I BUILD RANKINGS, WEBSITES &amp; SYSTEMS
+        I BUILD WEBSITES, APPS &amp; INTERFACES
         <br />
-        THAT LOCAL BUSINESSES RUN ON.
+        THAT PEOPLE ACTUALLY ENJOY USING.
       </p>
 
       <div className={styles.band} aria-hidden="true">

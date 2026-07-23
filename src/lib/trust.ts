@@ -31,14 +31,14 @@ export const credentials: Credential[] = [
     detail: "Builds production software with AI-first tooling: Cursor, Claude Code, GitHub, and Vercel, with human review on every line that ships.",
   },
   {
-    title: "Local SEO Specialist",
+    title: "React and Next.js Developer",
     issuer: "4+ years of client work",
-    detail: "Full stack of local search: on-page SEO, citations, reviews, schema markup, and Google Business Profile management for service businesses.",
+    detail: "Component architecture, server rendering, routing, and state handled properly, so applications stay fast as features pile up.",
   },
   {
-    title: "WordPress and Elementor Professional",
-    issuer: "Platform expertise",
-    detail: "Deep experience shipping and managing fast WordPress builds that stay healthy, secure, and easy for owners to update.",
+    title: "Performance and Accessibility",
+    issuer: "Practice focus",
+    detail: "Core Web Vitals, semantic markup, and keyboard and screen reader testing treated as build requirements rather than an audit at the end.",
   },
 ];
 
@@ -80,23 +80,23 @@ export interface TrustPoint {
 
 export const trustPoints: TrustPoint[] = [
   {
-    title: "Niche focus, not a generalist",
+    title: "Design and code under one roof",
     description:
-      "I only work with local businesses. Every tactic, tool, and template I use is built for winning one city at a time, not chasing global keywords.",
+      "Most developers wait on a designer and most designers hand over something that cannot be built. You get both in one person, so nothing is lost in translation.",
   },
   {
-    title: "SEO and code under one roof",
+    title: "Fast by default, not as a phase",
     description:
-      "Most SEOs rent a developer and most developers guess at SEO. You get both disciplines in one person, so nothing is lost in translation.",
+      "Performance and accessibility are build requirements from the first commit. Retrofitting them after launch costs more and works less well.",
   },
   {
-    title: "Reports in plain English",
+    title: "Updates in plain English",
     description:
-      "You will always know what I did, why I did it, and what it changed. Positions, calls, and leads, not vanity charts.",
+      "You will always know what I did, why I did it, and what it changed. Working previews and short written notes, not status theatre.",
   },
   {
-    title: "Systems that outlive the contract",
+    title: "Code that outlives the contract",
     description:
-      "Everything I build is documented and handed over properly. If we stop working together, your rankings and tools stay yours.",
+      "Everything is typed, documented, and handed over in your own repository. If we stop working together, the codebase stays readable and yours.",
   },
 ];

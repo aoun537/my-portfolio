@@ -121,7 +121,7 @@ export default function Services() {
         <span className="eyebrow">Services &amp; Toolkit</span>
       </div>
       <h2 id="services-heading" className="srOnly">
-        Services and Toolkit: Search, Local SEO, Vibe Coding, and Shipping
+        Services and Toolkit: Design, Frontend, Backend, and Shipping
       </h2>
 
       {/* Pinned to the vertical center of the frame */}

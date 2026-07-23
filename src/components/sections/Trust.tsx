@@ -89,7 +89,7 @@ export default function Trust() {
     >
       <span className="eyebrow">Proof &amp; Trust</span>
       <h2 id="trust-heading" className={styles.heading}>
-        Why Local Businesses <span>Keep Me Around.</span>
+        Why Clients <span>Keep Me Around.</span>
       </h2>
 
       {/* Inverted stats band */}

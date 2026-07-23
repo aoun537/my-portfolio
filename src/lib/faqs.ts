@@ -10,38 +10,38 @@ export interface Faq {
 
 export const faqs: Faq[] = [
   {
-    question: "What does a Local SEO Expert actually do?",
+    question: "What kind of web development do you do?",
     answer:
-      "A Local SEO Expert makes your business show up when nearby customers search for what you sell. That covers your website structure and copy, your Google Business Profile, reviews, citations, and schema markup. The goal is simple: more calls, more direction requests, and more bookings from people in your service area.",
+      "Custom marketing sites, web applications, and e-commerce storefronts, mostly with React, Next.js, and TypeScript. That covers the interface people use, the API and database behind it, and the deployment pipeline that gets it live. If it runs in a browser and needs to be fast and maintainable, it is in scope.",
   },
   {
-    question: "How long does Local SEO take to show results?",
+    question: "How long does a typical project take?",
     answer:
-      "Most local businesses see measurable movement in 60 to 90 days, with map pack positions typically strengthening between 3 and 6 months. Timelines depend on your competition, your starting point, and how fast we can publish the pages and profile updates your market needs.",
+      "A focused marketing site is usually 2 to 4 weeks. A web application with authentication, a database, and integrations is more often 6 to 12 weeks depending on how many flows it has. I scope the first milestone tightly so you see something working early rather than waiting until the end.",
   },
   {
-    question: "Do you only build new websites or can you fix my current one?",
+    question: "Can you fix or improve my existing site instead of rebuilding it?",
     answer:
-      "Both. If your current site has good bones I will restructure, rewrite, and optimize it. If it is holding you back I will rebuild it on WordPress with Elementor or as a custom coded site, whichever fits your budget and goals. Every build ships with local SEO baked in from day one.",
+      "Often yes, and it is usually the cheaper answer. If the codebase has good bones I will refactor, optimize, and extend it. A rebuild only makes sense when the current stack is actively fighting you, and I will tell you plainly which situation you are in before you spend anything.",
   },
   {
-    question: "What is included in Google Business Profile management?",
+    question: "What does the accessibility and performance work involve?",
     answer:
-      "Category and service optimization, weekly posts, photo updates, Q and A management, review responses, spam fighting for fake competitor listings, and monthly reporting on calls, clicks, and direction requests. Your profile becomes a managed sales channel instead of a forgotten listing.",
+      "I measure first with Lighthouse and Core Web Vitals, then fix what actually moves the number: bundle size, image and font loading, render blocking, and layout shift. Accessibility work covers semantic markup, keyboard navigation, focus order, and contrast, tested with a screen reader rather than assumed.",
   },
   {
-    question: "What custom systems can you build for a local business?",
+    question: "What is a Certified Vibe Coder?",
     answer:
-      "Leads management dashboards, taxi booking systems, restaurant management systems, quote calculators, review collection tools, and other software specific to your operation. As a Certified Vibe Coder I build these with modern AI-first tooling, which means custom software at a price a local business can justify.",
+      "It means I build with AI-first tooling such as Cursor and Claude Code, with human review on every line that ships. The tooling speeds up the typing, not the thinking. Architecture, review, and the decision about what is actually correct stay with me, which is what keeps the result maintainable.",
   },
   {
-    question: "Where are you based and which markets do you serve?",
+    question: "Where are you based and how do you work with clients?",
     answer:
-      "I am based in Pakistan and work with local businesses in the United States, United Kingdom, Canada, Australia, and worldwide. Local SEO is done remotely by nature, and my hours overlap with morning meetings in the US and afternoon meetings in the UK and Europe.",
+      "I am based in Pakistan and work remotely with clients in the United States, United Kingdom, Canada, Australia, and worldwide. My hours overlap with morning meetings in the US and afternoon meetings in the UK and Europe. Work happens in a shared repository so you can see progress at any point.",
   },
   {
     question: "How much do your services cost?",
     answer:
-      "Local SEO websites and custom systems are quoted per project after a short discovery call. Ongoing services like GBP management and website management are monthly retainers. Send a message through the contact form with your business type and city, and you will get a clear quote with no surprises.",
+      "Websites and applications are quoted per project after a short discovery call, so the number reflects your actual scope rather than a package. Maintenance is a monthly retainer. Send a message through the contact form describing what you need and you will get a clear quote with no surprises.",
   },
 ];

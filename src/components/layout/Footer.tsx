@@ -5,9 +5,9 @@ import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { site } from "@/lib/site";
 import styles from "./Footer.module.css";
 
-const CLOSING_STATEMENT = "RANK WHERE IT PAYS.";
+const CLOSING_STATEMENT = "BUILD IT PROPERLY.";
 const CLOSING_DETAIL =
-  "Rankings only matter when they ring the phone. Everything I build points at one outcome: a local business that gets found first and booked more.";
+  "Shipping fast and building well are not opposites. Everything I build points at one outcome: software that is quick to use, easy to change, and still standing a year later.";
 
 /** Closing statement with character reveal, then site footer. */
 export default function Footer() {
@@ -52,7 +52,7 @@ export default function Footer() {
           <a href="#faq">FAQ</a>
           <a href={`mailto:${site.email}`}>Email</a>
         </nav>
-        <span className={styles.note}>Serving local businesses worldwide</span>
+        <span className={styles.note}>Building for clients worldwide</span>
       </div>
     </footer>
   );
