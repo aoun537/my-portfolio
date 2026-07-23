@@ -46,6 +46,13 @@
 .rowMask {
   display: block;
   overflow: hidden;
+  padding: 0.5vw 0;
+}
+
+/* The element the open/close timeline slides; the mask crops it. */
+.inner {
+  display: block;
+  position: relative;
 }
 
 .link {
@@ -65,21 +72,39 @@
   opacity: 0.75;
 }
 
-.word {
-  display: inline-flex;
+/* Holds the word and its clipped duplicate in the same box */
+.wordWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.word,
+.fill {
+  display: block;
   font-size: clamp(44px, 8.2vh, 88px);
   font-weight: 900;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1.02;
-  perspective: 700px;
 }
 
-.letter {
-  display: inline-block;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform, color;
+/*
+ * Hover wipe: a copy of the word painted in the panel color is clipped
+ * away entirely, then revealed from 40% down — so the lower part of each
+ * glyph reads as cut out of the background.
+ */
+.fill {
+  position: absolute;
+  inset: 0;
+  color: var(--menu-bg, var(--accent));
+  clip-path: inset(100% 0 0);
+  transition: clip-path 0.4s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.link:hover .fill,
+.link:focus-visible .fill {
+  clip-path: inset(40% -2% 0 0);
 }
 
 /* Sub-label sits under the big word, revealed on hover */
@@ -140,8 +165,49 @@
   transition: transform 0.3s var(--ease-out-expo);
 }
 
-.asideLink:hover {
+/*
+ * Character roll: two stacked copies of the label. On hover the base
+ * rolls up out of the mask while the white clone rolls in from below,
+ * each glyph delayed slightly so the swap reads as a wave.
+ */
+.socialText {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.socialBase,
+.socialClone {
+  display: flex;
+}
+
+.socialClone {
+  position: absolute;
+  top: 0;
+  left: 0;
   color: #ffffff;
+}
+
+.socialChar {
+  display: inline-block;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.socialClone .socialChar {
+  transform: translateY(100%);
+}
+
+.asideLink:hover .socialBase .socialChar,
+.asideLink:focus-visible .socialBase .socialChar {
+  transform: translateY(-100%);
+}
+
+.asideLink:hover .socialClone .socialChar,
+.asideLink:focus-visible .socialClone .socialChar {
+  transform: translateY(0);
+}
+
+.asideLink:hover {
   transform: translateX(6px);
 }
 
@@ -187,6 +253,13 @@
   color: #ffffff;
   border-color: #ffffff;
   transform: rotate(8deg) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .socialChar {
+    transition: none;
+  }
 }
 
 /* ---------- Mobile ---------- */

@@ -144,7 +144,7 @@ export default function Contact() {
     >
       <span className={`eyebrow ${styles.eyebrow}`}>Start a Project</span>
       <h2 id="contact-heading" className="srOnly">
-        Contact Shams Uzair: Start Your Local SEO or Custom Build Project
+        Contact {site.name}: Start Your {site.shortRole} or Custom Build Project
       </h2>
 
       {status === "sent" ? (
@@ -159,7 +159,7 @@ export default function Contact() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <p className={styles.row} data-row>
             <label htmlFor="contact-name">
-              <Words text="Hey, Shams! My name is" />
+              <Words text={`Hey, ${site.firstName}! My name is`} />
             </label>
             <input
               id="contact-name"

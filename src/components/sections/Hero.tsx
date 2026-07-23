@@ -223,11 +223,16 @@ export default function Hero() {
     <section ref={sectionRef} className={`${styles.hero} plusGrid`} id="top">
       <h1 className={styles.heading}>
         <span className="srOnly">
-          {site.name}: Local SEO Expert and Certified Vibe Coder with {site.yearsExperience} years of
+          {site.name}: {site.role} with {site.yearsExperience} years of
           experience helping local businesses rank on Google
         </span>
-        <NameLine word={site.firstName} line="first" accentIndices={[]} />
-        <NameLine word={site.lastName} line="last" accentIndices={[0, 3]} />
+        {/*
+         * One accent letter per line, so both recolor when the menu commits
+         * the next palette color. "first-0" stays ink and "last-0" stays
+         * accent to match the preloader monogram letters that dock onto them.
+         */}
+        <NameLine word={site.firstName.toUpperCase()} line="first" accentIndices={[1]} />
+        <NameLine word={site.lastName.toUpperCase()} line="last" accentIndices={[0]} />
       </h1>
 
       <p className={styles.tagline}>

@@ -1,6 +1,18 @@
-# Shams Uzair | Local SEO Expert Portfolio
+# Portfolio
 
-Single-page portfolio for Shams Uzair, Local SEO Expert and Certified Vibe Coder. Built with Next.js (App Router), TypeScript, GSAP, and Lenis.
+Animated single-page portfolio built with Next.js (App Router), TypeScript, GSAP, and Lenis.
+
+Adapted from [xcipherx1/shams-uzair](https://github.com/xcipherx1/shams-uzair), kept as the `upstream` remote.
+
+## Rebranding this site
+
+Identity is centralized: **every name, role, initial, and location string on the
+page reads from `src/lib/site.ts`**. Change that one file and the hero, preloader
+monogram, navbar, footer, contact form, receipt block, page metadata, and JSON-LD
+all follow. No component contains a hardcoded name.
+
+The surrounding *copy* (services, projects, testimonials, FAQs, process) is
+separate — see the content table below.
 
 ## Getting started
 
@@ -14,7 +26,7 @@ npm run build     # production build
 
 1. Create an API key at https://resend.com/api-keys
 2. Copy `.env.example` to `.env.local` and paste the key into `RESEND_API_KEY`
-3. Optional: once your domain is verified in Resend, set `RESEND_FROM` to something like `Shams Uzair <hello@yourdomain.com>`
+3. Optional: once your domain is verified in Resend, set `RESEND_FROM` to something like `Your Name <hello@yourdomain.com>`
 
 Without a key the form degrades gracefully and shows the direct email fallback.
 
@@ -24,7 +36,7 @@ All copy lives in typed data files, so you never touch components to change word
 
 | File | Contains |
 | --- | --- |
-| `src/lib/site.ts` | Name, role, email, tagline, keywords, social links, `SITE_URL` |
+| `src/lib/site.ts` | Name, initials, role, email, tagline, keywords, social links, country/service areas, `SITE_URL` |
 | `src/lib/services.ts` | Toolkit groups (SEARCH/LOCAL/BUILD/SHIP), rail chips, hero marquee items |
 | `src/lib/serviceDetails.ts` | Per-service inclusion lists |
 | `src/lib/projects.ts` | Work showcase projects and ranking case studies |

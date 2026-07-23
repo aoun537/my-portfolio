@@ -2,16 +2,20 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
+import { site } from "@/lib/site";
 import styles from "./Preloader.module.css";
 
 /** Greetings across the markets I serve, ending on home. */
 const GREETINGS = ["Hello", "G'day", "Bonjour", "Hola", "السلام علیکم"];
 
-export const PRELOADER_DONE_EVENT = "su:preloader-done";
+export const PRELOADER_DONE_EVENT = "portfolio:preloader-done";
+
+/* Monogram letters come from the initials so a rebrand needs no edit here. */
+const [MONO_FIRST, MONO_SECOND] = [site.initials[0], site.initials[1] ?? ""];
 
 /**
  * Boot sequence: greetings cycle in every language I work in, then the
- * S and U monogram letters fly from screen center to the exact spots
+ * two monogram letters fly from screen center to the exact spots
  * where the hero headline letters sit, and the page takes over.
  * The Hero listens for PRELOADER_DONE_EVENT to start its own intro.
  *
@@ -132,10 +136,10 @@ export default function Preloader() {
       <span className={styles.greeting} />
       <span className={styles.monogram}>
         <span data-mono-s className={styles.letterS}>
-          S
+          {MONO_FIRST}
         </span>
         <span data-mono-u className={styles.letterU}>
-          U
+          {MONO_SECOND}
         </span>
       </span>
     </div>

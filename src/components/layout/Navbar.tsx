@@ -45,7 +45,9 @@ export default function Navbar() {
         </button>
 
         <a href="#top" className={styles.logo} id="nav-logo" aria-label={`${site.name}, back to top`}>
-          S<span className={styles.logoAccent}>U</span>
+          {/* Monogram follows site.initials; second letter carries the accent. */}
+          {site.initials.charAt(0)}
+          <span className={styles.logoAccent}>{site.initials.slice(1)}</span>
           <span className={styles.logoDot}>.</span>
         </a>
       </nav>

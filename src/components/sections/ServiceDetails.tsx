@@ -82,7 +82,7 @@ export default function ServiceDetails() {
           {/* Receipt header */}
           <header className={styles.head}>
             <p className={styles.shopName} data-print>
-              {site.name.toUpperCase()} ✳ LOCAL SEO EXPERT
+              {site.name.toUpperCase()} ✳ {site.shortRole.toUpperCase()}
             </p>
             <p className={styles.headLine} data-print>
               ORDER: YOUR LOCAL MARKET
@@ -144,11 +144,13 @@ export default function ServiceDetails() {
           {/* Barcode */}
           <div className={styles.barcodeBlock} data-print aria-hidden="true">
             <span className={styles.barcode} />
-            <span className={styles.barcodeLabel}>SU-{year}-LOCAL-SEO</span>
+            <span className={styles.barcodeLabel}>
+              {site.initials}-{year}-{site.receiptCode}
+            </span>
           </div>
 
           <p className={styles.thanks} data-print>
-            THANK YOU FOR RANKING WITH SHAMS
+            {site.receiptThanks} {site.firstName.toUpperCase()}
           </p>
 
           {/* Tear-off coupon */}

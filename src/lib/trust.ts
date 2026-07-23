@@ -3,6 +3,8 @@
  * Replace testimonial placeholders with real client quotes as they arrive.
  */
 
+import { site } from "@/lib/site";
+
 export interface Stat {
   value: number;
   suffix: string;
@@ -53,7 +55,7 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Calls from Google doubled within three months. Shams rebuilt our pages around the suburbs we actually serve and it just worked.",
+      `Calls from Google doubled within three months. ${site.firstName} rebuilt our pages around the suburbs we actually serve and it just worked.`,
     name: "Client Name",
     business: "Plumbing Company, United States",
   },

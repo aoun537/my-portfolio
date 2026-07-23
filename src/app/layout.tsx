@@ -26,7 +26,7 @@ const doppioOne = Doppio_One({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${site.name} | Local SEO Expert and Certified Vibe Coder`,
+    default: `${site.name} | ${site.role}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title: `${site.name} | Local SEO Expert and Certified Vibe Coder`,
+    title: `${site.name} | ${site.role}`,
     description: site.tagline,
     siteName: site.name,
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} | Local SEO Expert and Certified Vibe Coder`,
+    title: `${site.name} | ${site.role}`,
     description: site.tagline,
   },
   robots: {
