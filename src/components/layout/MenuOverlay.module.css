@@ -70,41 +70,40 @@
   letter-spacing: 0.2em;
   color: var(--brand-ink);
   opacity: 0.75;
+  transition: opacity 0.3s ease;
 }
 
-/* Holds the word and its clipped duplicate in the same box */
+.link:hover .index,
+.link:focus-visible .index {
+  opacity: 1;
+}
+
 .wordWrap {
   position: relative;
   display: inline-block;
 }
 
-.word,
-.fill {
+.word {
   display: block;
   font-size: clamp(44px, 8.2vh, 88px);
   font-weight: 900;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1.02;
+  color: var(--brand-ink);
+  transition: color 0.3s ease, transform 0.4s var(--ease-out-expo);
 }
 
 /*
- * Hover wipe: a copy of the word painted in the panel color is clipped
- * away entirely, then revealed from 40% down — so the lower part of each
- * glyph reads as cut out of the background.
+ * The panel background IS the accent color, so tinting the word with
+ * --accent (or with the panel color, as the old cut-out wipe did) erases
+ * it against its own background. Hover deepens the ink and nudges the
+ * row instead, which stays readable on every palette color.
  */
-.fill {
-  position: absolute;
-  inset: 0;
-  color: var(--menu-bg, var(--accent));
-  clip-path: inset(100% 0 0);
-  transition: clip-path 0.4s var(--ease-out-expo);
-  pointer-events: none;
-}
-
-.link:hover .fill,
-.link:focus-visible .fill {
-  clip-path: inset(40% -2% 0 0);
+.link:hover .word,
+.link:focus-visible .word {
+  color: #0d1016;
+  transform: translateX(10px);
 }
 
 /* Sub-label sits under the big word, revealed on hover */
@@ -181,11 +180,12 @@
   display: flex;
 }
 
+/* Deepened ink rather than white, so the roll stays legible on every palette color. */
 .socialClone {
   position: absolute;
   top: 0;
   left: 0;
-  color: #ffffff;
+  color: #0d1016;
 }
 
 .socialChar {
@@ -256,9 +256,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fill,
+  .word,
   .socialChar {
     transition: none;
+  }
+
+  .link:hover .word,
+  .link:focus-visible .word {
+    transform: none;
   }
 }
 

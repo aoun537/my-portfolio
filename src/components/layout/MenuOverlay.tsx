@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import { gsap } from "@/lib/gsap";
 import { site } from "@/lib/site";
 import styles from "./MenuOverlay.module.css";
@@ -156,12 +156,7 @@ export default function MenuOverlay({ open, onClose, revealColor }: MenuOverlayP
     <div
       ref={rootRef}
       className={styles.overlay}
-      /* --menu-bg feeds the hover fill so cut-out letters match the panel. */
-      style={
-        revealColor
-          ? ({ background: revealColor, "--menu-bg": revealColor } as CSSProperties)
-          : undefined
-      }
+      style={revealColor ? { background: revealColor } : undefined}
       role="dialog"
       aria-modal="true"
       aria-label="Site menu"
@@ -187,10 +182,6 @@ export default function MenuOverlay({ open, onClose, revealColor }: MenuOverlayP
                       </span>
                       <span className={styles.wordWrap}>
                         <span className={styles.word}>{item.label}</span>
-                        {/* Duplicate clipped from the bottom on hover */}
-                        <span className={styles.fill} aria-hidden="true">
-                          {item.label}
-                        </span>
                       </span>
                       <span className={styles.sub}>{item.sub}</span>
                     </a>

@@ -35,7 +35,7 @@ export const site = {
   receiptCode: "WEB-DEV",
   receiptThanks: "THANK YOU FOR BUILDING WITH",
   /* Full phrase, so prose reads correctly at any figure ("1 year", "3 years"). */
-  experience: "1 year",
+  experience: "3+ years",
   location: "Pakistan",
   /* ISO 3166-1 alpha-2, used for the schema.org PostalAddress */
   countryCode: "PK",
@@ -44,7 +44,7 @@ export const site = {
   email: "syedaoun0302@gmail.com",
   tagline: "I build fast, modern websites with AI-first tooling and human review on every line.",
   description:
-    "Syed Aoun is an AI-Powered Web Developer with 1 year of experience building fast, accessible websites. Work spans custom marketing sites built with React and Next.js, e-commerce storefronts, ongoing website maintenance, and performance and accessibility work, built with modern AI-first tooling such as Cursor and Claude Code, with human review on every line that ships.",
+    "Syed Aoun is an AI-Powered Web Developer with 3+ years of experience building fast, accessible websites. Work spans custom marketing sites built with React and Next.js, e-commerce storefronts, ongoing website maintenance, and performance and accessibility work, built with modern AI-first tooling such as Cursor and Claude Code, with human review on every line that ships.",
   knowsAbout: [
     "Web Development",
     "AI-Assisted Development",
