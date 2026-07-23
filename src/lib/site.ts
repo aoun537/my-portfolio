@@ -5,8 +5,21 @@
  * Update SITE_URL once you purchase the final domain.
  */
 
-/* TODO: replace with the real domain once purchased (example.com is a placeholder). */
-export const SITE_URL = "https://syedaoun.example.com";
+/**
+ * Canonical origin, used by metadata, robots.txt, sitemap.xml, and JSON-LD.
+ * Resolution order:
+ *   1. NEXT_PUBLIC_SITE_URL  - set this once a real domain is live
+ *   2. VERCEL_PROJECT_PRODUCTION_URL - stable production host on Vercel
+ *      (not VERCEL_URL, which changes on every deployment)
+ *   3. the placeholder below, for local work
+ * Only read server-side (metadata, robots, sitemap, schema), so the
+ * unprefixed Vercel variable is fine here.
+ */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://syedaoun.example.com");
 
 export const site = {
   name: "Syed Aoun",
