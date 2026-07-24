@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { bindShift } from "@/lib/letterFx";
-import { projects, rankingCases, type Project, type RankingCase } from "@/lib/projects";
+import { projects, buildStandards, type Project, type BuildStandard } from "@/lib/projects";
 import styles from "./Work.module.css";
 
 /**
@@ -169,53 +169,29 @@ function ShowcasePanel({ project }: { project: Project }) {
   );
 }
 
-/** One won keyword, presented like the search result it became. */
-function RankingCard({ item, index }: { item: RankingCase; index: number }) {
+/** One quality bar, shown as a stat card with an optional count-up. */
+function StandardCard({ item, index }: { item: BuildStandard; index: number }) {
   return (
     <article className={styles.rankCard} data-rank-card>
-      <div className={styles.rankKeyword}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.8-3.8" strokeLinecap="round" />
-        </svg>
-        <span>{item.keyword}</span>
+      <div className={styles.standardValue}>
+        {item.countTo !== undefined ? (
+          <span data-standard-counter={item.countTo} data-standard-suffix={item.suffix ?? ""}>
+            0{item.suffix ?? ""}
+          </span>
+        ) : (
+          <span>{item.value}</span>
+        )}
       </div>
 
-      <div className={styles.rankMove}>
-        <span className={styles.rankFrom}>#{item.from}</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true">
-          <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span className={styles.rankTo}>
-          #<span data-rank-counter={item.to} data-rank-start={item.from}>{item.from}</span>
-        </span>
-      </div>
-
-      <dl className={styles.rankMeta}>
-        <div>
-          <dt>Client</dt>
-          <dd>{item.business}</dd>
-        </div>
-        <div>
-          <dt>Market</dt>
-          <dd>{item.market}</dd>
-        </div>
-        <div>
-          <dt>Result</dt>
-          <dd className={styles.rankStat}>{item.stat}</dd>
-        </div>
-        <div>
-          <dt>Timeframe</dt>
-          <dd>{item.timeframe}</dd>
-        </div>
-      </dl>
+      <p className={styles.standardLabel}>{item.label}</p>
+      <p className={styles.standardDetail}>{item.detail}</p>
 
       <span className={styles.rankIndex}>0{index + 1}</span>
     </article>
   );
 }
 
-function Rankings() {
+function Standards() {
   const blockRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -233,19 +209,19 @@ function Rankings() {
         scrollTrigger: { trigger: block, start: "top 75%" },
       });
 
-      /* Positions count down from the old rank to the new one */
-      gsap.utils.toArray<HTMLElement>("[data-rank-counter]", block).forEach((el) => {
-        const from = Number(el.dataset.rankStart);
-        const to = Number(el.dataset.rankCounter);
-        const state = { value: from };
+      /* Numeric values count up from zero */
+      gsap.utils.toArray<HTMLElement>("[data-standard-counter]", block).forEach((el) => {
+        const to = Number(el.dataset.standardCounter);
+        const suffix = el.dataset.standardSuffix ?? "";
+        const state = { value: 0 };
         gsap.to(state, {
           value: to,
           duration: 1.8,
           ease: "power3.out",
-          delay: 0.5,
+          delay: 0.4,
           scrollTrigger: { trigger: el, start: "top 85%" },
           onUpdate: () => {
-            el.textContent = String(Math.round(state.value));
+            el.textContent = `${Math.round(state.value)}${suffix}`;
           },
         });
       });
@@ -259,13 +235,13 @@ function Rankings() {
 
   return (
     <div ref={blockRef} className={styles.rankings}>
-      <span className="eyebrow">Website Rankings</span>
+      <span className="eyebrow">How I Build</span>
       <h3 className={styles.rankingsHeading}>
-        Keywords That Went From <span>Buried to Booked.</span>
+        Quality That Is Measured, <span>Not Promised.</span>
       </h3>
       <div className={styles.rankGrid}>
-        {rankingCases.map((item, i) => (
-          <RankingCard key={item.keyword} item={item} index={i} />
+        {buildStandards.map((item, i) => (
+          <StandardCard key={item.label} item={item} index={i} />
         ))}
       </div>
     </div>
@@ -292,7 +268,7 @@ export default function Work() {
       <div ref={introRef} className={styles.intro}>
         <span className="eyebrow">Selected Works</span>
         <h2 id="work-heading" className={styles.introHeading}>
-          Websites, Systems &amp; Rankings <span>That Pay Rent.</span>
+          Websites &amp; Interfaces <span>Built to Last.</span>
         </h2>
       </div>
 
@@ -300,16 +276,16 @@ export default function Work() {
         <ShowcasePanel key={project.slug} project={project} />
       ))}
 
-      <Rankings />
+      <Standards />
 
       <div className={styles.archive}>
         <p className={styles.archiveStatement}>
-          These are a selection. Behind them sit dozens of local businesses whose rankings, websites,
-          and systems I have quietly <span>audited, rebuilt, and shipped.</span>
+          A selection of the work. Every build ships typed, accessible, and fast, and stays that way
+          after <span>I hand it over.</span>
         </p>
         <div className={styles.archiveFooter}>
           <div className={styles.archiveNote}>
-            <span>EVERY KEYWORD EARNED</span>
+            <span>EVERY PIXEL INTENTIONAL</span>
             <span>EVERY BUILD, SHIPPED</span>
           </div>
           <a href="#contact" className={styles.archiveLink}>

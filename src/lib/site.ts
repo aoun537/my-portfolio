@@ -42,6 +42,12 @@ export const site = {
   serviceArea: "United States, United Kingdom, Canada, and Australia",
   serviceAreas: ["United States", "United Kingdom", "Canada", "Australia", "Worldwide"],
   email: "syedaoun0302@gmail.com",
+  /*
+   * WhatsApp number in international format, digits only, no "+" or spaces
+   * (e.g. Pakistan "923001234567"). Used to build a wa.me chat link.
+   * Leave blank and the WhatsApp option falls back to opening email.
+   */
+  whatsapp: "",
   tagline: "I build fast, modern websites with AI-first tooling and human review on every line.",
   description:
     "Syed Aoun is an AI-Powered Web Developer with 3+ years of experience building fast, accessible websites. Work spans custom marketing sites built with React and Next.js, e-commerce storefronts, ongoing website maintenance, and performance and accessibility work, built with modern AI-first tooling such as Cursor and Claude Code, with human review on every line that ships.",

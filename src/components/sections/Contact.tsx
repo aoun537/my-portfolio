@@ -9,6 +9,29 @@ const TOPICS = ["Full-Time Role", "Freelance / Contract", "Building a Product"];
 const CHANNELS = ["WhatsApp", "Email"] as const;
 
 type Status = "idle" | "sending" | "sent" | "error";
+/** How the enquiry actually left the page, so the success copy is accurate. */
+type SentVia = "server" | "email" | "whatsapp";
+
+interface Payload {
+  name: string;
+  location: string;
+  email: string;
+  message: string;
+  topics: string[];
+  preference: string;
+}
+
+/** Plain-text summary shared by the mailto and WhatsApp fallbacks. */
+function buildSummary(p: Payload): string {
+  return [
+    `Name: ${p.name}`,
+    `From: ${p.location || "Not provided"}`,
+    `Email: ${p.email}`,
+    `Interested in: ${p.topics[0] ?? "Not specified"}`,
+    "",
+    p.message,
+  ].join("\n");
+}
 
 /** Wraps each word in a revealable span for the scroll-tied reveal. */
 function Words({ text }: { text: string }) {
@@ -35,6 +58,7 @@ export default function Contact() {
   const [topic, setTopic] = useState<string | null>(null);
   const [channel, setChannel] = useState<(typeof CHANNELS)[number]>("Email");
   const [status, setStatus] = useState<Status>("idle");
+  const [sentVia, setSentVia] = useState<SentVia>("server");
   const [errorMessage, setErrorMessage] = useState("");
 
   useGSAP(
@@ -101,14 +125,40 @@ export default function Contact() {
 
     const form = event.currentTarget;
     const data = new FormData(form);
-    const payload = {
-      name: String(data.get("name") ?? ""),
-      location: String(data.get("country") ?? ""),
-      email: String(data.get("email") ?? ""),
-      message: String(data.get("message") ?? ""),
+    const payload: Payload = {
+      name: String(data.get("name") ?? "").trim(),
+      location: String(data.get("country") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
       topics: topic ? [topic] : [],
       preference: channel,
     };
+
+    /* Guard so a fallback never opens a blank draft */
+    if (!payload.name || !payload.email || !payload.message) {
+      setErrorMessage("Please add your name, email, and a short message.");
+      setStatus("error");
+      return;
+    }
+
+    const summary = buildSummary(payload);
+    const finishSent = (via: SentVia) => {
+      setSentVia(via);
+      setStatus("sent");
+      form.reset();
+      setTopic(null);
+    };
+
+    /* WhatsApp preference: open the chat directly when a number is set */
+    if (channel === "WhatsApp" && site.whatsapp) {
+      window.open(
+        `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(summary)}`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+      finishSent("whatsapp");
+      return;
+    }
 
     setStatus("sending");
     setErrorMessage("");
@@ -121,18 +171,33 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        setStatus("sent");
-        form.reset();
-        setTopic(null);
-      } else {
-        const body = (await response.json().catch(() => null)) as { error?: string } | null;
-        setErrorMessage(body?.error ?? "Something went wrong. Please email me directly.");
-        setStatus("error");
+        finishSent("server");
+        return;
       }
+
+      /* Bad input or rate limit: show the reason, do not fall back */
+      if (response.status === 400 || response.status === 429) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        setErrorMessage(body?.error ?? "Please check your details and try again.");
+        setStatus("error");
+        return;
+      }
+
+      /* Service not configured (503) or send failed: open the visitor's mail app */
+      openMailto(payload, summary);
+      finishSent("email");
     } catch {
-      setErrorMessage("Network error. Please email me directly.");
-      setStatus("error");
+      openMailto(payload, summary);
+      finishSent("email");
     }
+  };
+
+  /** Prefills the visitor's email client with the enquiry addressed to me. */
+  const openMailto = (p: Payload, summary: string) => {
+    const subject = `New enquiry from ${p.name}`;
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(summary)}`;
   };
 
   return (
@@ -149,10 +214,15 @@ export default function Contact() {
 
       {status === "sent" ? (
         <div className={styles.success} role="status">
-          <p className={styles.successTitle}>Message sent.</p>
+          <p className={styles.successTitle}>
+            {sentVia === "server" ? "Message sent." : "Almost there."}
+          </p>
           <p className={styles.successText}>
-            Thanks for reaching out. I read every enquiry myself and will reply within one business
-            day with next steps or a couple of sharp questions.
+            {sentVia === "server"
+              ? "Thanks for reaching out. I read every enquiry myself and will reply within one business day with next steps or a couple of sharp questions."
+              : sentVia === "whatsapp"
+                ? "WhatsApp just opened with your message ready. Hit send there and it lands with me directly."
+                : "Your email app just opened with the message ready. Hit send there and it lands in my inbox, and I reply within one business day."}
           </p>
         </div>
       ) : (

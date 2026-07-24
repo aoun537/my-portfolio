@@ -12,36 +12,20 @@ mkdirSync(outDir, { recursive: true });
 
 const projects = [
   {
-    file: "leadflow.svg",
-    accent: "#CB1F37",
-    name: "LeadFlow",
-    headline: "Every lead. One pipeline.",
-    sub: "Calls, forms and GBP messages tracked to the job.",
-    chips: ["New 12", "Quoted 7", "Booked 9", "Won 23"],
+    file: "aurora.svg",
+    accent: "#2FA9C4",
+    name: "Aurora",
+    headline: "Motion that means something.",
+    sub: "An animated single-page portfolio built on Next.js and GSAP.",
+    chips: ["Hero", "Work", "Process", "Contact"],
   },
   {
-    file: "rideline.svg",
-    accent: "#f5a623",
-    name: "RideLine",
-    headline: "Book a cab in 20 seconds.",
-    sub: "Live dispatch, driver tracking and instant fares.",
-    chips: ["Pickup", "Drop-off", "Fare $18", "Driver 4 min"],
-  },
-  {
-    file: "plumbpro.svg",
-    accent: "#1e9e63",
-    name: "PlumbPro",
-    headline: "Your local plumber, on top of Google.",
-    sub: "Location pages, reviews and calls that convert.",
-    chips: ["Map pack #1", "4.9 stars", "32 cities", "Call now"],
-  },
-  {
-    file: "smilecrest.svg",
-    accent: "#12a4b8",
-    name: "SmileCrest",
-    headline: "Straighter smiles, booked online.",
-    sub: "Treatment pages and reviews that fill the chair.",
-    chips: ["Book online", "4.9 stars", "Invisalign", "Emergency"],
+    file: "carton.svg",
+    accent: "#E8590C",
+    name: "Carton",
+    headline: "A storefront built to check out.",
+    sub: "Product pages, cart and Stripe checkout, tuned for speed.",
+    chips: ["New in", "$49", "Add to cart", "Checkout"],
   },
 ];
 

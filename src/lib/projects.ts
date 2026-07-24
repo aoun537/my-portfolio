@@ -1,16 +1,18 @@
 /**
  * Work section content.
- * - `projects`: image showcases (2 Local SEO websites + 2 custom systems).
- *   Swap placeholder entries with real client work: name, blurb, stack,
- *   href, and a 1280x840 screenshot in /public/images/projects/.
- * - `rankingCases`: 3 ranking results presented as SERP-style stat cards.
+ * - `projects`: image showcases. AURORA is this actual site; the other
+ *   three are sample builds shipped with the template — replace them with
+ *   real client work (name, blurb, stack, href, and a 1280x840 screenshot
+ *   in /public/images/projects/) before relying on the site professionally.
+ * - `buildStandards`: the quality bars every build is held to, shown as
+ *   count-up stat cards. These are standards, not per-client results.
  */
 
 export interface Project {
   slug: string;
   name: string;
-  kind: "website" | "system";
-  /** Short value-first summary shown under the showcase. */
+  kind: "website" | "app";
+  /** Short, feature-first summary shown under the showcase. */
   blurb: string;
   stack: string;
   category: string;
@@ -22,95 +24,67 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "plumbpro",
-    name: "PLUMBPRO",
+    slug: "aurora",
+    name: "AURORA",
     kind: "website",
-    blurb: "Local SEO website for a plumbing company. Location pages, review schema, and call-first layout took it from invisible to the top of the map pack.",
-    stack: "WordPress + Elementor + GBP",
-    category: "LOCAL SEO WEBSITE",
-    image: "/images/projects/plumbpro.svg",
-    imageAlt: "Local plumbing company website homepage optimized for local search with service areas and review stars",
-    accent: "#1e9e63",
+    blurb:
+      "The site you are reading. A single-page portfolio with a spring-physics cursor-repulsion engine, GSAP scroll choreography, and Lenis smooth scroll, built on Next.js 16 and TypeScript.",
+    stack: "Next.js + TypeScript + GSAP",
+    category: "ANIMATED PORTFOLIO",
+    image: "/images/projects/aurora.svg",
+    imageAlt:
+      "Animated portfolio homepage with a large split-letter headline and a smooth scrolling layout",
+    accent: "#2FA9C4",
   },
   {
-    slug: "smilecrest",
-    name: "SMILECREST",
+    slug: "carton",
+    name: "CARTON",
     kind: "website",
-    blurb: "Dental clinic website built around treatment and suburb pages. Online booking wired to every page turned rankings into filled chairs.",
-    stack: "Next.js + TypeScript + GBP",
-    category: "LOCAL SEO WEBSITE",
-    image: "/images/projects/smilecrest.svg",
-    imageAlt: "Dental clinic website homepage with treatment pages, online booking, and patient review highlights",
-    accent: "#12a4b8",
-  },
-  {
-    slug: "leadflow",
-    name: "LEADFLOW",
-    kind: "system",
-    blurb: "Leads management dashboard that captures every call, form, and GBP message in one pipeline so local businesses stop losing jobs in their inbox.",
-    stack: "Next.js + TypeScript + Resend",
-    category: "LEADS DASHBOARD",
-    image: "/images/projects/leadflow.svg",
-    imageAlt: "Leads management dashboard showing a pipeline of local customer enquiries with sources and statuses",
-    accent: "#CB1F37",
-  },
-  {
-    slug: "rideline",
-    name: "RIDELINE",
-    kind: "system",
-    blurb: "Taxi booking system with live dispatch, driver assignment, and instant fare quotes built for a local cab fleet that outgrew phone bookings.",
-    stack: "Next.js + Node + Postgres",
-    category: "TAXI BOOKING SYSTEM",
-    image: "/images/projects/rideline.svg",
-    imageAlt: "Taxi booking system interface with pickup and destination fields and a live driver dispatch map",
-    accent: "#f5a623",
+    blurb:
+      "An e-commerce storefront with product and collection pages, a smooth cart and checkout flow, and Stripe payments, tuned to keep every step of the purchase fast.",
+    stack: "Next.js + Stripe + Tailwind",
+    category: "E-COMMERCE STOREFRONT",
+    image: "/images/projects/carton.svg",
+    imageAlt:
+      "E-commerce storefront showing a product grid, prices, and an add-to-cart action",
+    accent: "#E8590C",
   },
 ];
 
-export interface RankingCase {
-  /** The money keyword that was won. */
-  keyword: string;
-  business: string;
-  market: string;
-  /** Starting Google position. */
-  from: number;
-  /** Final Google position. */
-  to: number;
-  /** Headline business outcome. */
-  stat: string;
-  timeframe: string;
+export interface BuildStandard {
+  /** Display value, e.g. "98" or "AA". */
+  value: string;
+  /** Optional numeric target for the count-up animation (integers only). */
+  countTo?: number;
+  /** Optional suffix printed after a counted value, e.g. "%". */
+  suffix?: string;
+  label: string;
+  detail: string;
 }
 
 /**
- * PLACEHOLDER ranking results. Replace with real client campaigns:
- * keyword, market, positions, and the outcome stat.
+ * Quality bars every build is held to. Adjust the values to whatever you
+ * genuinely hold yourself to; these are standards of practice, not
+ * fabricated per-client outcomes.
  */
-export const rankingCases: RankingCase[] = [
+export const buildStandards: BuildStandard[] = [
   {
-    keyword: "emergency plumber austin",
-    business: "Plumbing Company",
-    market: "Austin, TX",
-    from: 27,
-    to: 1,
-    stat: "+212% calls",
-    timeframe: "5 months",
+    value: "95+",
+    countTo: 95,
+    suffix: "+",
+    label: "Lighthouse performance",
+    detail: "Every build is profiled and tuned before it ships, not audited after launch.",
   },
   {
-    keyword: "invisalign leeds",
-    business: "Dental Clinic",
-    market: "Leeds, UK",
-    from: 14,
-    to: 2,
-    stat: "+168% bookings",
-    timeframe: "4 months",
+    value: "AA",
+    label: "WCAG accessibility",
+    detail: "Semantic markup, keyboard flows, and contrast tested with a screen reader.",
   },
   {
-    keyword: "geelong airport transfers",
-    business: "Taxi Fleet",
-    market: "Geelong, AU",
-    from: 19,
-    to: 3,
-    stat: "3.4x more rides",
-    timeframe: "6 months",
+    value: "100%",
+    countTo: 100,
+    suffix: "%",
+    label: "Responsive coverage",
+    detail: "Laid out mobile-first and checked from small phones up to wide desktops.",
   },
 ];
