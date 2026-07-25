@@ -82,93 +82,53 @@ export async function POST(request: Request) {
   const channel = preference || "Not specified";
 
   /*
-   * Two delivery paths, in order of preference:
-   *  1. Resend, if RESEND_API_KEY is set (best deliverability, from your own
-   *     domain once verified).
-   *  2. FormSubmit otherwise: no account or key, forwards to site.email.
-   *     The first message ever sent triggers a one-time activation email
-   *     to that address; click its link once and every later message
-   *     arrives straight in the inbox.
+   * The server sends the mail itself through Resend, so the visitor never
+   * leaves the page and is never handed off to their own mail client.
    */
   const apiKey = process.env.RESEND_API_KEY;
 
-  if (apiKey) {
-    const resend = new Resend(apiKey);
-    const fromAddress = process.env.RESEND_FROM ?? "Portfolio Contact <onboarding@resend.dev>";
-
-    const { error } = await resend.emails.send({
-      from: fromAddress,
-      to: [site.email],
-      replyTo: email,
-      subject,
-      text: [
-        `Name: ${name}`,
-        `Location: ${location || "Not provided"}`,
-        `Email: ${email}`,
-        `Interested in: ${interestedIn}`,
-        `Preferred channel: ${channel}`,
-        "",
-        "Message:",
-        message,
-      ].join("\n"),
-    });
-
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "Could not send your message right now. Please email me directly." },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ ok: true });
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is not set: the contact form cannot send.");
+    return NextResponse.json(
+      { error: "Could not send your message right now. Please try again later." },
+      { status: 503 },
+    );
   }
+
+  const resend = new Resend(apiKey);
+  const fromAddress = process.env.RESEND_FROM ?? "Portfolio Contact <onboarding@resend.dev>";
 
   /*
-   * FormSubmit rejects requests without an Origin/Referer (its "open through
-   * a web server" guard), so pass the caller's own origin through.
+   * Delivery inbox. Defaults to the public contact address. RESEND_TO exists
+   * only for the case where Resend is still in test mode and can deliver to
+   * the account owner's address alone.
    */
-  const origin = request.headers.get("origin") ?? new URL(request.url).origin;
+  const deliverTo = process.env.RESEND_TO ?? site.email;
 
-  try {
-    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Origin: origin,
-        Referer: `${origin}/`,
-      },
-      body: JSON.stringify({
-        Name: name,
-        Email: email,
-        Location: location || "Not provided",
-        "Interested in": interestedIn,
-        "Preferred channel": channel,
-        Message: message,
-        _subject: subject,
-        _template: "table",
-        _captcha: "false",
-      }),
-    });
+  const { error } = await resend.emails.send({
+    from: fromAddress,
+    to: [deliverTo],
+    replyTo: email,
+    subject,
+    text: [
+      `Name: ${name}`,
+      `Location: ${location || "Not provided"}`,
+      `Email: ${email}`,
+      `Interested in: ${interestedIn}`,
+      `Preferred channel: ${channel}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n"),
+  });
 
-    const data = (await response.json().catch(() => null)) as { success?: unknown } | null;
-    const succeeded = data?.success === true || data?.success === "true";
-
-    if (response.ok && succeeded) {
-      return NextResponse.json({ ok: true });
-    }
-
-    console.error("FormSubmit error:", response.status, data);
+  if (error) {
+    console.error("Resend error:", error);
     return NextResponse.json(
-      { error: "Could not send your message right now. Please email me directly." },
-      { status: 502 },
-    );
-  } catch (err) {
-    console.error("FormSubmit exception:", err);
-    return NextResponse.json(
-      { error: "Could not send your message right now. Please email me directly." },
+      { error: "Could not send your message right now. Please try again later." },
       { status: 502 },
     );
   }
+
+  return NextResponse.json({ ok: true });
 }

@@ -10,7 +10,7 @@ const CHANNELS = ["WhatsApp", "Email"] as const;
 
 type Status = "idle" | "sending" | "sent" | "error";
 /** How the enquiry actually left the page, so the success copy is accurate. */
-type SentVia = "server" | "email" | "whatsapp";
+type SentVia = "server" | "whatsapp";
 
 interface Payload {
   name: string;
@@ -21,7 +21,7 @@ interface Payload {
   preference: string;
 }
 
-/** Plain-text summary shared by the mailto and WhatsApp fallbacks. */
+/** Plain-text summary used by the WhatsApp hand-off. */
 function buildSummary(p: Payload): string {
   return [
     `Name: ${p.name}`,
@@ -175,29 +175,18 @@ export default function Contact() {
         return;
       }
 
-      /* Bad input or rate limit: show the reason, do not fall back */
-      if (response.status === 400 || response.status === 429) {
-        const body = (await response.json().catch(() => null)) as { error?: string } | null;
-        setErrorMessage(body?.error ?? "Please check your details and try again.");
-        setStatus("error");
-        return;
-      }
-
-      /* Service not configured (503) or send failed: open the visitor's mail app */
-      openMailto(payload, summary);
-      finishSent("email");
+      /*
+       * The server sends the mail itself, so a failure is reported in place.
+       * The visitor is never redirected into their own mail client: the
+       * address stays on screen below the form if they want to write directly.
+       */
+      const body = (await response.json().catch(() => null)) as { error?: string } | null;
+      setErrorMessage(body?.error ?? "Could not send your message. Please try again in a moment.");
+      setStatus("error");
     } catch {
-      openMailto(payload, summary);
-      finishSent("email");
+      setErrorMessage("Network error. Please check your connection and try again.");
+      setStatus("error");
     }
-  };
-
-  /** Prefills the visitor's email client with the enquiry addressed to me. */
-  const openMailto = (p: Payload, summary: string) => {
-    const subject = `New enquiry from ${p.name}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(summary)}`;
   };
 
   return (
@@ -215,14 +204,12 @@ export default function Contact() {
       {status === "sent" ? (
         <div className={styles.success} role="status">
           <p className={styles.successTitle}>
-            {sentVia === "server" ? "Message sent." : "Almost there."}
+            {sentVia === "whatsapp" ? "Over to WhatsApp." : "Message sent."}
           </p>
           <p className={styles.successText}>
-            {sentVia === "server"
-              ? "Thanks for reaching out. I read every enquiry myself and will reply within one business day with next steps or a couple of sharp questions."
-              : sentVia === "whatsapp"
-                ? "WhatsApp just opened with your message ready. Hit send there and it lands with me directly."
-                : "Your email app just opened with the message ready. Hit send there and it lands in my inbox, and I reply within one business day."}
+            {sentVia === "whatsapp"
+              ? "WhatsApp just opened with your message ready. Hit send there and it lands with me directly."
+              : "Thanks for reaching out. I read every enquiry myself and will reply within one business day with next steps or a couple of sharp questions."}
           </p>
         </div>
       ) : (
