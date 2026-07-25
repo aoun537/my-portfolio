@@ -14,12 +14,17 @@
  *   3. the placeholder below, for local work
  * Only read server-side (metadata, robots, sitemap, schema), so the
  * unprefixed Vercel variable is fine here.
+ *
+ * Trailing slashes are stripped: callers append their own path, so a value
+ * entered as "https://example.com/" would otherwise yield "//sitemap.xml".
  */
-export const SITE_URL =
+const resolvedSiteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "https://syedaoun.example.com");
+
+export const SITE_URL = resolvedSiteUrl.replace(/\/+$/, "");
 
 export const site = {
   name: "Syed Aoun",
