@@ -10,11 +10,9 @@ interface ContactPayload {
   topics: string[];
   email: string;
   message: string;
-  /** Preferred reply channel: WhatsApp or Email. */
-  preference?: string;
 }
 
-const MAX_LENGTHS: Record<keyof Omit<ContactPayload, "topics" | "preference">, number> = {
+const MAX_LENGTHS: Record<keyof Omit<ContactPayload, "topics">, number> = {
   name: 120,
   location: 120,
   email: 254,
@@ -65,7 +63,6 @@ export async function POST(request: Request) {
     : [];
   const message =
     typeof body.message === "string" ? body.message.trim().slice(0, MAX_LENGTHS.message) : "";
-  const preference = sanitize(body.preference, 40);
 
   if (!name || !email || !message) {
     return NextResponse.json(
@@ -79,7 +76,6 @@ export async function POST(request: Request) {
 
   const subject = `New enquiry from ${name}${location ? ` (${location})` : ""}`;
   const interestedIn = topics.length ? topics.join(", ") : "Not specified";
-  const channel = preference || "Not specified";
 
   /*
    * The server sends the mail itself through Resend, so the visitor never
@@ -115,7 +111,6 @@ export async function POST(request: Request) {
       `Location: ${location || "Not provided"}`,
       `Email: ${email}`,
       `Interested in: ${interestedIn}`,
-      `Preferred channel: ${channel}`,
       "",
       "Message:",
       message,

@@ -6,11 +6,8 @@ import { site } from "@/lib/site";
 import styles from "./Contact.module.css";
 
 const TOPICS = ["Full-Time Role", "Freelance / Contract", "Building a Product"];
-const CHANNELS = ["WhatsApp", "Email"] as const;
 
 type Status = "idle" | "sending" | "sent" | "error";
-/** How the enquiry actually left the page, so the success copy is accurate. */
-type SentVia = "server" | "whatsapp";
 
 interface Payload {
   name: string;
@@ -18,19 +15,6 @@ interface Payload {
   email: string;
   message: string;
   topics: string[];
-  preference: string;
-}
-
-/** Plain-text summary used by the WhatsApp hand-off. */
-function buildSummary(p: Payload): string {
-  return [
-    `Name: ${p.name}`,
-    `From: ${p.location || "Not provided"}`,
-    `Email: ${p.email}`,
-    `Interested in: ${p.topics[0] ?? "Not specified"}`,
-    "",
-    p.message,
-  ].join("\n");
 }
 
 /** Wraps each word in a revealable span for the scroll-tied reveal. */
@@ -56,9 +40,7 @@ function Words({ text }: { text: string }) {
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const [topic, setTopic] = useState<string | null>(null);
-  const [channel, setChannel] = useState<(typeof CHANNELS)[number]>("Email");
   const [status, setStatus] = useState<Status>("idle");
-  const [sentVia, setSentVia] = useState<SentVia>("server");
   const [errorMessage, setErrorMessage] = useState("");
 
   useGSAP(
@@ -131,32 +113,12 @@ export default function Contact() {
       email: String(data.get("email") ?? "").trim(),
       message: String(data.get("message") ?? "").trim(),
       topics: topic ? [topic] : [],
-      preference: channel,
     };
 
-    /* Guard so a fallback never opens a blank draft */
+    /* Caught client-side so the server is not hit with an empty enquiry */
     if (!payload.name || !payload.email || !payload.message) {
       setErrorMessage("Please add your name, email, and a short message.");
       setStatus("error");
-      return;
-    }
-
-    const summary = buildSummary(payload);
-    const finishSent = (via: SentVia) => {
-      setSentVia(via);
-      setStatus("sent");
-      form.reset();
-      setTopic(null);
-    };
-
-    /* WhatsApp preference: open the chat directly when a number is set */
-    if (channel === "WhatsApp" && site.whatsapp) {
-      window.open(
-        `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(summary)}`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-      finishSent("whatsapp");
       return;
     }
 
@@ -171,7 +133,9 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        finishSent("server");
+        setStatus("sent");
+        form.reset();
+        setTopic(null);
         return;
       }
 
@@ -203,13 +167,10 @@ export default function Contact() {
 
       {status === "sent" ? (
         <div className={styles.success} role="status">
-          <p className={styles.successTitle}>
-            {sentVia === "whatsapp" ? "Over to WhatsApp." : "Message sent."}
-          </p>
+          <p className={styles.successTitle}>Message sent.</p>
           <p className={styles.successText}>
-            {sentVia === "whatsapp"
-              ? "WhatsApp just opened with your message ready. Hit send there and it lands with me directly."
-              : "Thanks for reaching out. I read every enquiry myself and will reply within one business day with next steps or a couple of sharp questions."}
+            Thanks for reaching out. I read every enquiry myself and will reply within one business
+            day with next steps or a couple of sharp questions.
           </p>
         </div>
       ) : (
@@ -278,22 +239,6 @@ export default function Contact() {
               className={`${styles.input} ${styles.inputWide}`}
               data-reveal
             />
-            <span className={styles.pills} role="group" aria-label="Preferred channel" data-reveal>
-              {CHANNELS.map((item) => {
-                const active = channel === item;
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    className={`${styles.pill} ${active ? styles.pillActive : ""}`}
-                    aria-pressed={active}
-                    onClick={() => setChannel(item)}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-            </span>
           </p>
 
           <p className={styles.row} data-row>
