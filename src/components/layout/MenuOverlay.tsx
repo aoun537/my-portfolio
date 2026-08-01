@@ -16,11 +16,13 @@ const MENU_ITEMS = [
  * Display order, top to bottom. Profiles left blank in site.ts are dropped
  * rather than rendered as dead links.
  */
-const SOCIALS = [
+const SOCIAL_PROFILES: { label: string; href: string }[] = [
   { label: "GITHUB", href: site.social.github },
   { label: "INSTAGRAM", href: site.social.instagram },
   { label: "LINKEDIN", href: site.social.linkedin },
-].filter((social) => social.href !== "");
+];
+
+const SOCIALS = SOCIAL_PROFILES.filter((social) => social.href !== "");
 
 /** Master ease for the overlay wipe and the row slide. */
 const EASE = "power4.inOut";

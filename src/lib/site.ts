@@ -73,12 +73,12 @@ export const site = {
     "Syed Aoun",
   ],
   /*
-   * TODO: add the remaining profile URLs. Blank entries are filtered out of
-   * the menu, so nothing renders until they are set.
+   * Blank entries are filtered out of the menu, so an unset profile is
+   * dropped rather than rendered as a dead link.
    */
   social: {
     instagram: "https://www.instagram.com/ig.syed_aoun/",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/syed-aoun-dev/",
     github: "https://github.com/aoun537",
   },
 } as const;
