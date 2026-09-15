@@ -1,9 +1,10 @@
 /**
  * Work section content.
- * - `projects`: image showcases. AURORA is this actual site; the other
- *   three are sample builds shipped with the template — replace them with
- *   real client work (name, blurb, stack, href, and a 1280x840 screenshot
- *   in /public/images/projects/) before relying on the site professionally.
+ * - `projects`: image showcases. AURORA is this actual site and SPIDEY is a
+ *   live build; CARTON is a sample shipped with the template — replace it
+ *   with real client work (name, blurb, stack, href, and a 1280x840
+ *   screenshot in /public/images/projects/) before relying on the site
+ *   professionally.
  * - `buildStandards`: the quality bars every build is held to, shown as
  *   count-up stat cards. These are standards, not per-client results.
  */
@@ -35,6 +36,20 @@ export const projects: Project[] = [
     imageAlt:
       "Animated portfolio homepage with a large split-letter headline and a smooth scrolling layout",
     accent: "#2FA9C4",
+  },
+  {
+    slug: "spidey",
+    name: "SPIDEY",
+    kind: "website",
+    blurb:
+      "A single-page developer portfolio on a comic-inspired dark theme, with anchored about, projects, and skills sections, a downloadable resume, and GSAP motion throughout, built on Next.js and Tailwind.",
+    stack: "Next.js + Tailwind + GSAP",
+    category: "PERSONAL PORTFOLIO",
+    image: "/images/projects/spidey.svg",
+    imageAlt:
+      "Dark portfolio homepage with a bold headline, a resume button, and about, projects, skills, and contact section cards",
+    href: "https://spidey-portfolio-three.vercel.app/",
+    accent: "#C8102E",
   },
   {
     slug: "carton",

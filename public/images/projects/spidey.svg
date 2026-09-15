@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 840" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1280" height="840" rx="14" fill="#141416"/>
+  <rect width="1280" height="64" rx="14" fill="#211f20"/>
+  <rect y="30" width="1280" height="34" fill="#211f20"/>
+  <circle cx="36" cy="32" r="7" fill="#e2483d"/>
+  <circle cx="60" cy="32" r="7" fill="#f5a623"/>
+  <circle cx="84" cy="32" r="7" fill="#1e9e63"/>
+  <rect x="360" y="18" width="560" height="28" rx="14" fill="#3a383a"/>
+  <text x="640" y="38" text-anchor="middle" font-size="15" fill="#b9b7b9">spidey-portfolio-three.vercel.app</text>
+  <rect x="48" y="104" width="150" height="30" rx="6" fill="#C8102E"/>
+  <text x="64" y="125" font-size="16" font-weight="bold" fill="#ffffff">Syed Aoun</text>
+  <text x="748" y="125" font-size="15" fill="#9d9aa0">About</text>
+  <text x="826" y="125" font-size="15" fill="#9d9aa0">Projects</text>
+  <text x="926" y="125" font-size="15" fill="#9d9aa0">Skills</text>
+  <text x="998" y="125" font-size="15" fill="#9d9aa0">Contact</text>
+  <rect x="1082" y="104" width="150" height="30" rx="15" fill="#C8102E"/>
+  <text x="1157" y="124" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Resume</text>
+  <text x="80" y="268" font-size="58" font-weight="bold" fill="#ffffff">AI-Powered Web Developer</text>
+  <text x="80" y="314" font-size="24" fill="#9d9aa0">Building modern websites and AI-powered web applications.</text>
+  <rect x="80" y="356" width="180" height="48" rx="24" fill="#C8102E"/>
+  <rect x="276" y="356" width="180" height="48" rx="24" fill="none" stroke="#3a383a" stroke-width="2"/>
+
+  <g transform="translate(80, 460)">
+    <rect width="268" height="220" rx="12" fill="#1e1e21"/>
+    <rect x="20" y="20" width="90" height="26" rx="13" fill="#C8102E" opacity="0.25"/>
+    <text x="20" y="88" font-size="21" font-weight="bold" fill="#ffffff">About</text>
+    <rect x="20" y="112" width="228" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="132" width="180" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="152" width="204" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="180" width="110" height="22" rx="11" fill="#C8102E"/>
+  </g>
+  <g transform="translate(372, 460)">
+    <rect width="268" height="220" rx="12" fill="#1e1e21"/>
+    <rect x="20" y="20" width="90" height="26" rx="13" fill="#C8102E" opacity="0.47"/>
+    <text x="20" y="88" font-size="21" font-weight="bold" fill="#ffffff">Projects</text>
+    <rect x="20" y="112" width="228" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="132" width="180" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="152" width="204" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="180" width="110" height="22" rx="11" fill="#C8102E"/>
+  </g>
+  <g transform="translate(664, 460)">
+    <rect width="268" height="220" rx="12" fill="#1e1e21"/>
+    <rect x="20" y="20" width="90" height="26" rx="13" fill="#C8102E" opacity="0.69"/>
+    <text x="20" y="88" font-size="21" font-weight="bold" fill="#ffffff">Skills</text>
+    <rect x="20" y="112" width="228" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="132" width="180" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="152" width="204" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="180" width="110" height="22" rx="11" fill="#C8102E"/>
+  </g>
+  <g transform="translate(956, 460)">
+    <rect width="268" height="220" rx="12" fill="#1e1e21"/>
+    <rect x="20" y="20" width="90" height="26" rx="13" fill="#C8102E" opacity="0.91"/>
+    <text x="20" y="88" font-size="21" font-weight="bold" fill="#ffffff">Contact</text>
+    <rect x="20" y="112" width="228" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="132" width="180" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="152" width="204" height="10" rx="5" fill="#2e2e32"/>
+    <rect x="20" y="180" width="110" height="22" rx="11" fill="#C8102E"/>
+  </g>
+  <rect x="80" y="720" width="1152" height="70" rx="12" fill="#1e1e21"/>
+  <circle cx="130" cy="755" r="18" fill="#C8102E"/>
+  <rect x="170" y="738" width="300" height="12" rx="6" fill="#3a3a3f"/>
+  <rect x="170" y="760" width="220" height="12" rx="6" fill="#2e2e32"/>
+  <rect x="1020" y="740" width="180" height="32" rx="16" fill="#C8102E"/>
+</svg>
